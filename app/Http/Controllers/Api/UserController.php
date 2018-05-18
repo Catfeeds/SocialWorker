@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Resources\ReceivableResource;
+use App\Http\Resources\UserAssetResource;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserGroupResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\Tokens\TokenFactory;
@@ -76,5 +79,24 @@ class UserController extends ApiController
     public function self()
     {
         return $this->success(new UserResource(TokenFactory::getCurrentUser()));
+    }
+
+    public function groups()
+    {
+        return $this->success(UserGroupResource::collection(TokenFactory::getCurrentUser()->selfGroups));
+    }
+
+    public function asset()
+    {
+        return $this->success(new UserAssetResource(TokenFactory::getCurrentUser()->asset));
+    }
+
+    public function receivable()
+    {
+        $receivable = TokenFactory::getCurrentUser()->receivable;
+
+        if (!$receivable) return $this->success(null);
+
+        return $this->success(new ReceivableResource($receivable));
     }
 }

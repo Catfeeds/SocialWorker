@@ -21,4 +21,35 @@ Route::namespace('Api')->group(function () {
 
     // 获取自己的资料
     Route::get('/users/self', 'UserController@self')->name('users.self');
+
+    Route::get('/users/self/groups', 'UserController@groups')->name('users.groups');
+    Route::get('/users/self/asset', 'UserController@asset')->name('users.asset');
+    Route::get('/users/self/receivable', 'UserController@receivable')->name('users.receivable');
+
+    Route::apiResource('groups', 'GroupController')
+        ->only(['show']);
+
+    Route::apiResource('receivables', 'ReceivableController')
+        ->only(['store']);
+
+    Route::apiResource('cashes', 'CashController')
+        ->only(['store']);
+
+    Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
+
+//    Route::post('/test', function () {
+//
+//        Cache::forget('wx_access_token');
+//        return;
+//
+////        return \App\Models\User::findOrFail(7)->assetRecords;
+//
+//        return (new \App\Http\Controllers\Api\UserController())->asset();
+//
+//        \App\Models\User::create([
+//            'nickname' => 'nickname',
+//            'avatar' => 'avatar',
+//            'sex' => 0
+//        ]);
+//    });
 });

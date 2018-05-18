@@ -107,3 +107,12 @@ function getFirstDayOfTheMonth($year = '', $month = '')
     $result = date('t', $timestamp);
     return $result;
 }
+
+function taxRate($x)
+{
+    if ($x <= 800) return 0;
+    if ($x > 800 && $x < 4000) return ($x - 800) * 0.2;
+    if ($x >= 4000 && $x < 21000) return ($x - $x * 0.2) * 0.2;
+    if ($x >= 21000 && $x < 49500) return ($x - $x * 0.2) * 0.3 - 2000;
+    if ($x >= 49500) return ($x - $x * 0.2) * 0.4 - 7000;
+}

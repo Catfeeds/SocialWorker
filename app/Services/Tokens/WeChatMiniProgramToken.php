@@ -10,6 +10,7 @@ namespace App\Services\Tokens;
 
 
 use App\Exceptions\RegisterException;
+use App\Exceptions\UserNotFoundException;
 use App\Models\User;
 use Exception;
 use DB;
@@ -66,19 +67,25 @@ class WeChatMiniProgramToken extends BaseToken
      */
     private function createUserIdentity($openid)
     {
+        $nickname = request()->post('nickname');
+        $avatar = request()->post('avatar');
+        $sex = request()->post('sex');
+
+        if(!$nickname || !$avatar || !$sex)
+            throw new UserNotFoundException();
+
         DB::beginTransaction();
         try {
             // 添加用户信息
             $user = User::create([
-                'nickname' => '小萌新',
-                'avatar' => 'https://lwx-images.oss-cn-beijing.aliyuncs.com/avatar.jpg',
-                'sex' => 0
+                'nickname' => $nickname,
+                'avatar' => $avatar,
+                'sex' => $sex
             ]);
-            $uid = $user->id;
 
             // 添加用户身份信息
             $identity = (new $this->model)->create([
-                'user_id' => $uid,
+                'user_id' => $user->id,
                 'platform' => 'wx',
                 'identity_type' => 'mp',
                 'identifier' => $openid,
