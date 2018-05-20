@@ -22,9 +22,12 @@ Route::namespace('Api')->group(function () {
     // 获取自己的资料
     Route::get('/users/self', 'UserController@self')->name('users.self');
 
+    Route::get('/invite_info/{id}', 'GroupController@inviteInfo')->name('groups.inviteInfo');
+
     Route::get('/users/self/groups', 'UserController@groups')->name('users.groups');
     Route::get('/users/self/asset', 'UserController@asset')->name('users.asset');
     Route::get('/users/self/receivable', 'UserController@receivable')->name('users.receivable');
+    Route::post('/equipment/bind', 'EquipmentController@bind');
 
     Route::apiResource('groups', 'GroupController')
         ->only(['show']);
@@ -37,19 +40,39 @@ Route::namespace('Api')->group(function () {
 
     Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
 
-//    Route::post('/test', function () {
-//
-//        Cache::forget('wx_access_token');
-//        return;
-//
-////        return \App\Models\User::findOrFail(7)->assetRecords;
-//
-//        return (new \App\Http\Controllers\Api\UserController())->asset();
-//
-//        \App\Models\User::create([
-//            'nickname' => 'nickname',
-//            'avatar' => 'avatar',
-//            'sex' => 0
-//        ]);
-//    });
+    Route::apiResource('equipment_categories', 'EquipmentCategoryController')
+        ->only(['index']);
+
+    Route::apiResource('equipment', 'EquipmentController')
+        ->only(['index']);
+
+    Route::middleware('role:super')->group(function () {
+
+        Route::apiResource('equipment_categories', 'EquipmentCategoryController')
+            ->only(['store', 'destroy']);
+
+        Route::apiResource('equipment', 'EquipmentController')
+            ->only(['store']);
+    });
+
+
+    Route::post('/test', function () {
+
+        return createGuid();
+
+        return \Illuminate\Support\Facades\Schema::getColumnListing((new \App\Models\User())->getTable());
+
+        Cache::forget('wx_access_token');
+        return;
+
+//        return \App\Models\User::findOrFail(7)->assetRecords;
+
+        return (new \App\Http\Controllers\Api\UserController())->asset();
+
+        \App\Models\User::create([
+            'nickname' => 'nickname',
+            'avatar' => 'avatar',
+            'sex' => 0
+        ]);
+    });
 });

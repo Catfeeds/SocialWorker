@@ -14,6 +14,7 @@ use App\Exceptions\PasswordErrorException;
 use App\Exceptions\RegisterException;
 use App\Exceptions\UserNotFoundException;
 use App\Models\User;
+use DB;
 use Exception;
 use Hash;
 

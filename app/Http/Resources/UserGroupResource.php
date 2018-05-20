@@ -17,7 +17,7 @@ class UserGroupResource extends JsonResource
         return [
             'id' => $this->id,
             'creator' => (new UserResource($this->user))->show(['id', 'nickname', 'avatar']),
-            'invitation_code' => config('app.url') . '/api/invitation_codes/' . $this->invitationCode->value('id'),
+            'invitation_code' => config('app.url') . '/api/invitation_codes/' . $this->invitationCode->id,
             'users_num' => $this->users()->count(),
             'users' => UserResource::collection($this->users()->paginate(10))->show(['avatar'])
         ];

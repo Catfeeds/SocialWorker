@@ -31,18 +31,23 @@ class Account
     {
         $verificationCode = request()->post('verification_code');
         $verificationToken = request()->post('verification_token');
+        $username = request()->post('username');
         $password = request()->post('password');
 
         if (!preg_match('/^\w{6,18}$/', $password))
             throw new RegisterException('密码为6~18位字母、数字或下划线');
 
-        $username = VerificationCode::getContact($verificationCode, $verificationToken);
+        if ($verificationCode && $verificationToken)
+            $username = VerificationCode::getContact($verificationCode, $verificationToken);
+
         $type = self::judgeAccountType($username);
 
         if ($type == 'phone')
             return TokenFactory::phone($username)->create();
         if ($type == 'email')
             return TokenFactory::email($username)->create();
+        if ($type == 'account')
+            return TokenFactory::account()->create();
     }
 
     /**

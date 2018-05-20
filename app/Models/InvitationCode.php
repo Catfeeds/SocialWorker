@@ -9,6 +9,22 @@
 namespace App\Models;
 
 
+/**
+ * App\Models\InvitationCode
+ *
+ * @property int $id
+ * @property int $group_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property mixed|null $code
+ * @property-read \App\Models\Group $group
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InvitationCode whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InvitationCode whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InvitationCode whereGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InvitationCode whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InvitationCode whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class InvitationCode extends Model
 {
     protected $guarded = [];

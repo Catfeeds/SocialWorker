@@ -8,6 +8,7 @@ use App\Http\Resources\UserAssetResource;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserGroupResource;
 use App\Http\Resources\UserResource;
+use App\Models\Group;
 use App\Models\User;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;

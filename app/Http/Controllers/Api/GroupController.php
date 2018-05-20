@@ -18,4 +18,18 @@ class GroupController extends ApiController
     {
         return $this->success(new GroupResource($group));
     }
+
+    public function inviteInfo($id)
+    {
+        $group = Group::findOrFail($id);
+        $user = $group->user;
+
+        return $this->success([
+            'avatar' => $user->avatar,
+            'nickname' => $user->nickname,
+            'days' => ceil((time() - $user->created_at->getTimestamp()) / 86400),
+            'income' => $user->asset->disabled + $user->asset->available,
+            'invitation_code' => config('app.url') . '/api/invitation_codes/' . $group->invitationCode->id
+        ]);
+    }
 }
