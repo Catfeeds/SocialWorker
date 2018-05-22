@@ -54,7 +54,7 @@ class WeChatController extends ApiController
             'notify_url' => config('wechat.payment.default.notify_url') . '/equipment'
         ]);
 
-        return $result;
+        return $this->success($result);
     }
 
     public function equipmentNotify()

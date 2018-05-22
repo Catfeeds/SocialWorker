@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Resources\EquipmentOrderResource;
 use App\Models\EquipmentOrder;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,6 @@ class EquipmentOrderController extends ApiController
 {
     public function store(Request $request)
     {
-        return EquipmentOrder::generate($request->post('ids'));
+        return $this->success(new EquipmentOrderResource(EquipmentOrder::generate($request->post('ids'))));
     }
 }

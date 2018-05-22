@@ -15,6 +15,11 @@ class EquipmentOrder extends Model
 {
     protected $guarded = [];
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
     public static function generate($ids)
     {
         $products = EquipmentCategory::whereIn('id', $ids)->get(['name', 'price']);
