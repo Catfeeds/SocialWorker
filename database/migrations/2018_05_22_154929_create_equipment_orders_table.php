@@ -21,7 +21,7 @@ class CreateEquipmentOrdersTable extends Migration
             $table->decimal('raise')->default(0);
             $table->json('snap_content');
             $table->tinyInteger('status')->default(0)->comment('0未支付 1已支付');
-            $table->string('prepay_id');
+            $table->string('prepay_id')->nullable();
             $table->timestamps();
         });
     }

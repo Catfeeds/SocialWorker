@@ -22,7 +22,7 @@ class CreateServiceOrdersTable extends Migration
             $table->decimal('price');
             $table->string('detection_result');
             $table->tinyInteger('status')->default(1)->comment('1待支付 2已支付 3已收款 4已完成');
-            $table->string('prepay_id');
+            $table->string('prepay_id')->nullable();
             $table->timestamp('paid_at');
             $table->timestamps();
         });
