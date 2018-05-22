@@ -54,7 +54,18 @@ class WeChatController extends ApiController
             'notify_url' => config('wechat.payment.default.notify_url') . '/equipment'
         ]);
 
-        return $this->success($result);
+        $this->validateWxResult($result);
+
+        $order->prepay_id = $result['prepay_id'];
+        $order->save();
+
+        return $this->success([
+            'timeStamp' => (string)time(),
+            'nonceStr' => $result['nonce_str'],
+            'package' => 'prepay_id=' . $result['prepay_id'],
+            'signType' => 'md5',
+            'paySign' => $result['sign']
+        ]);
     }
 
     public function equipmentNotify()
@@ -94,5 +105,15 @@ class WeChatController extends ApiController
     public function integralPay($orderNO)
     {
 
+    }
+
+    public function validateWxResult($result)
+    {
+        if ($result['return_code'] != 'SUCCESS' || $result['result_code'] != 'SUCCESS') {
+            \Log::error($result);
+            \Log::error('获取预支付订单失败');
+
+            throw new BaseException('获取预支付订单失败');
+        }
     }
 }
