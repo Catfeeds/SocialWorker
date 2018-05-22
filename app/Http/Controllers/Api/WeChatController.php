@@ -59,7 +59,7 @@ class WeChatController extends ApiController
         $order->prepay_id = $result['prepay_id'];
         $order->save();
 
-        return $this->success($payment->jssdk->appConfig($result['prepay_id']));
+        return $this->success($payment->jssdk->sdkConfig($result['prepay_id']));
     }
 
     public function equipmentNotify()
