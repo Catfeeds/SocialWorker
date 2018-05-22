@@ -254,7 +254,8 @@ class TokenFactory
      *
      * @param $checkedUID
      * @return bool
-     * @throws \Exception
+     * @throws TokenException
+     * @throws Exception
      */
     public static function isValidOperate($checkedUID)
     {
@@ -269,6 +270,24 @@ class TokenFactory
         }
 
         return false;
+    }
+
+    /**
+     * 是否是自己或者指定用户组
+     *
+     * @param $checkedUID
+     * @param string $role
+     * @return bool
+     * @throws ForbiddenException
+     * @throws TokenException
+     */
+    public static function needSelfOrRole($checkedUID, $role = 'super')
+    {
+        if (!self::isValidOperate($checkedUID) && !in_array($role, self::getCurrentRoles())) {
+            throw new ForbiddenException();
+        }
+
+        return true;
     }
 
     /**

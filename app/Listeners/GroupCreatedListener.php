@@ -38,7 +38,7 @@ class GroupCreatedListener
                 // 为用户小组生成邀请码
                 InvitationCode::create([
                     'group_id' => $group->id,
-                    'code' => WeChatQRCode::get($group->id)
+                    'code' => WeChatQRCode::invite($group->id)
                 ]);
             });
         } catch (Exception $exception) {

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEquipmentCategoriesTable extends Migration
+class CreateServiceCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateEquipmentCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('equipment_categories', function (Blueprint $table) {
+        Schema::create('service_codes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->decimal('price');
+            $table->integer('user_id');
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE `service_codes` ADD `code` MEDIUMBLOB");
     }
 
     /**
@@ -28,6 +29,6 @@ class CreateEquipmentCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('equipment_categories');
+        Schema::dropIfExists('service_codes');
     }
 }

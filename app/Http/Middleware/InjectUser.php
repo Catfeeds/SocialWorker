@@ -9,11 +9,12 @@ use Closure;
 class InjectUser
 {
     /**
+     * 注入用户
      *
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param \Illuminate\Http\Request $request
+     * @param Closure $next
      * @return mixed
+     * @throws \App\Exceptions\TokenException
      */
     public function handle($request, Closure $next)
     {

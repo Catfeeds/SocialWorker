@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Resources\EquipmentResource;
 use App\Http\Resources\ReceivableResource;
 use App\Http\Resources\UserAssetResource;
 use App\Http\Resources\UserCollection;
@@ -85,6 +86,11 @@ class UserController extends ApiController
     public function groups()
     {
         return $this->success(UserGroupResource::collection(TokenFactory::getCurrentUser()->selfGroups));
+    }
+
+    public function equipment()
+    {
+        return $this->success(EquipmentResource::collection(TokenFactory::getCurrentUser()->bindingsEquipment));
     }
 
     public function asset()

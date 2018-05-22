@@ -7,7 +7,9 @@ use App\Events\UserCreated;
 use App\Exceptions\UserNotFoundException;
 use App\Models\Asset;
 use App\Models\Group;
+use App\Models\ServiceCode;
 use App\Services\AssetService;
+use App\Services\WeChatQRCode;
 use DB;
 use Exception;
 use Illuminate\Queue\InteractsWithQueue;
@@ -40,6 +42,12 @@ class UserCreatedListener
                 // 添加用户资产信息
                 Asset::create([
                     'user_id' => $user->id
+                ]);
+
+                // 为用户生成服务码
+                ServiceCode::create([
+                    'user_id' => $user->id,
+                    'code' => WeChatQRCode::service($user->id)
                 ]);
 
                 // 为用户创建小组

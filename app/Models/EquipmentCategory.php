@@ -32,6 +32,6 @@ class EquipmentCategory extends Model
 
     public function equipment()
     {
-        return $this->hasMany('App\Models\Equipment');
+        return $this->hasMany('App\Models\Equipment', 'category_id');
     }
 }

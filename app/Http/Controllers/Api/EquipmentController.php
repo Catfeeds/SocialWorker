@@ -9,8 +9,11 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Exceptions\BaseException;
+use App\Http\Requests\BindEquipment;
 use App\Http\Resources\EquipmentCollection;
 use App\Models\Equipment;
+use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -39,8 +42,51 @@ class EquipmentController extends ApiController
         return $this->created();
     }
 
-    public function bind(Request $request)
+    /**
+     * 绑定设备
+     *
+     * @param BindEquipment $request
+     * @return mixed
+     * @throws BaseException
+     * @throws \App\Exceptions\TokenException
+     */
+    public function bind(BindEquipment $request)
+    {
+        $equipment = Equipment::where('serial_no', $request->post('serial_no'))->first();
+
+        if ($equipment->status == 1) throw new BaseException('该设备已被绑定');
+
+        $equipment->update([
+            'status' => 1,
+            'user_id' => TokenFactory::getCurrentUID()
+        ]);
+
+        return $this->message('绑定成功');
+    }
+
+    /**
+     * 解绑设备
+     *
+     * @param BindEquipment $request
+     * @return mixed
+     * @throws BaseException
+     * @throws \App\Exceptions\ForbiddenException
+     * @throws \App\Exceptions\TokenException
+     */
+    public function unbind(BindEquipment $request)
     {
         $serialNo = $request->post('serial_no');
+        $equipment = Equipment::where('serial_no', $serialNo)->first();
+
+        if ($equipment->status == 0) throw new BaseException('该设备未绑定');
+
+        TokenFactory::needSelfOrRole($equipment->user_id);
+
+        $equipment->update([
+            'status' => 0,
+            'user_id' => null
+        ]);
+
+        return $this->message('解绑成功');
     }
 }

@@ -72,9 +72,19 @@ class User extends Model
         return $this->hasMany('App\Models\Group');
     }
 
+    public function bindingsEquipment()
+    {
+        return $this->hasMany('App\Models\Equipment');
+    }
+
     public function groups()
     {
         return $this->belongsToMany('App\Models\Group');
+    }
+
+    public function serviceCode()
+    {
+        return $this->hasOne('App\Models\ServiceCode');
     }
 
     public function receivable()

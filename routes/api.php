@@ -27,7 +27,7 @@ Route::namespace('Api')->group(function () {
     Route::get('/users/self/groups', 'UserController@groups')->name('users.groups');
     Route::get('/users/self/asset', 'UserController@asset')->name('users.asset');
     Route::get('/users/self/receivable', 'UserController@receivable')->name('users.receivable');
-    Route::post('/equipment/bind', 'EquipmentController@bind');
+    Route::get('/users/self/equipment', 'UserController@equipment')->name('users.equipment');
 
     Route::apiResource('groups', 'GroupController')
         ->only(['show']);
@@ -39,12 +39,19 @@ Route::namespace('Api')->group(function () {
         ->only(['store']);
 
     Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
+    Route::get('/service_codes/{id}', 'ServiceCodeController@show')->name('service_codes.show');
 
     Route::apiResource('equipment_categories', 'EquipmentCategoryController')
         ->only(['index']);
 
     Route::apiResource('equipment', 'EquipmentController')
         ->only(['index']);
+
+    Route::apiResource('equipment_orders', 'EquipmentOrderController')
+        ->only(['store']);
+
+    Route::put('/equipment/bind', 'EquipmentController@bind')->name('equipment.bind');
+    Route::put('/equipment/unbind', 'EquipmentController@unbind')->name('equipment.unbind');
 
     Route::middleware('role:super')->group(function () {
 
@@ -55,24 +62,11 @@ Route::namespace('Api')->group(function () {
             ->only(['store']);
     });
 
+    Route::post('/payment/wechat_pay', 'WeChatController@pay');
+    Route::post('/payment/wechat_notify/equipment', 'WeChatController@equipmentNotify');
 
-    Route::post('/test', function () {
-
-        return createGuid();
-
-        return \Illuminate\Support\Facades\Schema::getColumnListing((new \App\Models\User())->getTable());
-
-        Cache::forget('wx_access_token');
-        return;
-
-//        return \App\Models\User::findOrFail(7)->assetRecords;
-
-        return (new \App\Http\Controllers\Api\UserController())->asset();
-
-        \App\Models\User::create([
-            'nickname' => 'nickname',
-            'avatar' => 'avatar',
-            'sex' => 0
-        ]);
+    Route::get('/test', function () {
+        $payment = EasyWeChat::payment();
+        return $payment->order->queryByOutTradeNumber('A522028116474344');
     });
 });
