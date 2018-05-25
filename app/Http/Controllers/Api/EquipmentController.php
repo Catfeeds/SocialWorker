@@ -19,9 +19,26 @@ use Illuminate\Support\Facades\Input;
 
 class EquipmentController extends ApiController
 {
-    public function index()
+    public function index(Request $request)
     {
-        return $this->success(new EquipmentCollection(Equipment::paginate(Input::get('limit') ?: 20)));
+        $equipment = (new Equipment())
+            ->when($request->serial_no, function ($query) use ($request) {
+                $query->where('serial_no', 'like', '%' . $request->serial_no . '%');
+            })
+            ->when($request->phone, function ($query) use ($request) {
+                $query->whereHas('user', function ($query) use ($request) {
+                    $query->where('phone', 'like', '%' . $request->phone . '%');
+                });
+            })
+            ->when($request->status != '', function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->when($request->category_id, function ($query) use ($request) {
+                $query->where('category_id', $request->category_id);
+            })
+            ->paginate(Input::get('limit') ?: 20);
+
+        return $this->success(new EquipmentCollection($equipment));
     }
 
     public function store(Request $request)

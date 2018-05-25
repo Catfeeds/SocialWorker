@@ -18,7 +18,7 @@ class CreateCashesTable extends Migration
             $table->integer('user_id');
             $table->integer('number');
             $table->integer('tax');
-            $table->tinyInteger('status')->default(1)->comment('1处理中 2已处理');
+            $table->tinyInteger('status')->default(1)->comment('1处理中 2已通过 3已拒绝');
             $table->timestamps();
         });
     }

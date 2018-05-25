@@ -14,6 +14,9 @@ class CashStatusEnum
     // 处理中
     const HANDLING = 1;
 
-    // 已处理
-    const HANDLED = 2;
+    // 已通过
+    const ADOPT = 2;
+
+    // 已拒绝
+    const REFUSE = 3;
 }

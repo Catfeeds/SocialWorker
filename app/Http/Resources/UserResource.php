@@ -3,6 +3,9 @@
 namespace App\Http\Resources;
 
 use App\Exceptions\BaseException;
+use App\Http\Controllers\Api\UserController;
+use App\Models\ServiceOrder;
+use App\Models\User;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -40,16 +43,18 @@ class UserResource extends JsonResource
     {
         return $this->filterFields([
             'id' => $this->id,
+            'name' => $this->name,
             'nickname' => $this->nickname,
             'avatar' => $this->avatar,
             'sex' => $this->convertSex($this->sex),
             'account' => $this->account,
             'phone' => $this->isSelfOrSuper() ? $this->phone : $this->partialHidden($this->phone, 3, 4),
-            'email' => $this->isSelfOrSuper() ? $this->email : $this->partialHidden($this->email, 1, 4),
-            'is_bind_account' => (bool)$this->is_bind_account,
-            'is_bind_phone' => (bool)$this->is_bind_phone,
-            'is_bind_email' => (bool)$this->is_bind_email,
-            'is_bind_wx' => (bool)$this->is_bind_wx,
+            'order_count' => $this->checks()->sum('price') + $this->equipmentOrders()->sum('price'),
+            'asset' => $this->asset->available,
+            'checks' => ServiceOrderResource::collection($this->checks),
+            'services' => ServiceOrderResource::collection($this->services),
+            'friends' => (new UserController())->friends($this->id),
+            'equipment' => EquipmentResource::collection($this->bindingsEquipment),
             'created_at' => (string)$this->created_at
         ]);
     }
@@ -117,15 +122,9 @@ class UserResource extends JsonResource
     public function isSelfOrSuper()
     {
         try {
-            $uid = TokenFactory::getCurrentUID();
-            $super = TokenFactory::needRole('super');
+            return TokenFactory::needSelfOrRole($this->id);
         } catch (BaseException $e) {
             return false;
         }
-
-        if ($uid == $this->id || $super == true)
-            return true;
-
-        return false;
     }
 }

@@ -10,14 +10,35 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Exceptions\ResourceStoreException;
+use App\Exports\CashesExport;
 use App\Http\Requests\StoreCash;
+use App\Http\Resources\CashCollection;
 use App\Models\Cash;
 use App\Services\Tokens\TokenFactory;
 use DB;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CashController extends ApiController
 {
+    public function index(Request $request)
+    {
+        $cashes = (new Cash())
+            ->when($request->nickname, function ($query) use ($request) {
+                $query->whereHas('user', function ($query) use ($request) {
+                    $query->where('nickname', 'like', '%' . $request->nickname . '%');
+                });
+            })
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->paginate(Input::get('limit') ?: 20);
+
+        return $this->success(new CashCollection($cashes));
+    }
+
     /**
      * 提现
      *
@@ -46,5 +67,18 @@ class CashController extends ApiController
         }
 
         return $this->created();
+    }
+
+    public function update(Request $request, Cash $cash)
+    {
+        $cash->status = $request->status;
+        $cash->save();
+
+        return $this->message('更新成功');
+    }
+
+    public function export()
+    {
+        return Excel::download(new CashesExport(), 'cashes.xlsx');
     }
 }

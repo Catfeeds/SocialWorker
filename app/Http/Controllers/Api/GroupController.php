@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
+use App\Models\User;
 
 class GroupController extends ApiController
 {
@@ -31,5 +32,10 @@ class GroupController extends ApiController
             'income' => $user->asset->disabled + $user->asset->available,
             'invitation_code' => config('app.url') . '/api/invitation_codes/' . $group->invitationCode->id
         ]);
+    }
+
+    public function getIdByUserId($id)
+    {
+        return $this->success(User::findOrFail($id)->selfGroups[0]->id);
     }
 }

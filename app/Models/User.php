@@ -54,6 +54,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $bindingsEquipment
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceOrder[] $checks
+ * @property-read \App\Models\ServiceCode $serviceCode
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceOrder[] $services
  */
 class User extends Model
 {
@@ -67,41 +72,122 @@ class User extends Model
         'created' => UserCreated::class
     ];
 
+    /**
+     * 自己的创建的组
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function selfGroups()
     {
         return $this->hasMany('App\Models\Group');
     }
 
-    public function bindingsEquipment()
-    {
-        return $this->hasMany('App\Models\Equipment');
-    }
-
+    /**
+     * 所属的组
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function groups()
     {
         return $this->belongsToMany('App\Models\Group');
     }
 
+    /**
+     * 收货地址
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address()
+    {
+        return $this->hasOne('App\Models\Address');
+    }
+
+
+    /**
+     * 检测过的服务
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function checks()
+    {
+        return $this->hasMany('App\Models\ServiceOrder');
+    }
+
+    /**
+     * 提供过的服务
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function services()
+    {
+        return $this->hasMany('App\Models\ServiceOrder', 'inspector_id');
+    }
+
+    /**
+     * 购买的设备订单
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function equipmentOrders()
+    {
+        return $this->hasMany('App\Models\EquipmentOrder');
+    }
+
+    /**
+     * 绑定的设备
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function bindingsEquipment()
+    {
+        return $this->hasMany('App\Models\Equipment');
+    }
+
+    /**
+     * 服务二维码
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function serviceCode()
     {
         return $this->hasOne('App\Models\ServiceCode');
     }
 
+    /**
+     * 提现信息
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function receivable()
     {
         return $this->hasOne('App\Models\Receivable');
     }
 
+    /**
+     * 资产信息
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function asset()
     {
         return $this->hasOne('App\Models\Asset');
     }
 
+    /**
+     * 收入列表
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function incomes()
     {
         return $this->hasMany('App\Models\AssetRecord');
     }
 
+    /**
+     * 提现列表
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cashes()
     {
         return $this->hasMany('App\Models\Cash');

@@ -312,8 +312,7 @@ class TokenFactory
     {
         $user = request()->offsetGet('user');
 
-        if (!$user)
-            throw new TokenException();
+        if (!$user) throw new TokenException();
 
         return $user;
     }

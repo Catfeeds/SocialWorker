@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Http\Requests\UpdateUser;
 use App\Http\Resources\EquipmentResource;
 use App\Http\Resources\ReceivableResource;
+use App\Http\Resources\ServiceOrderCollection;
+use App\Http\Resources\ServiceOrderResource;
+use App\Http\Resources\UserAddressResource;
 use App\Http\Resources\UserAssetResource;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserGroupResource;
@@ -22,9 +26,22 @@ class UserController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->success(new UserCollection(User::paginate(Input::get('limit') ?: 10)));
+        $users = (new User())
+            ->where('is_bind_account', 0)
+            ->when($request->nickname, function ($query) use ($request) {
+                $query->where('nickname', 'like', '%' . $request->nickname . '%');
+            })
+            ->when($request->name, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->name . '%');
+            })
+            ->when($request->phone, function ($query) use ($request) {
+                $query->where('phone', 'like', '%' . $request->phone . '%');
+            })
+            ->paginate(Input::get('limit') ?: 20);
+
+        return $this->success(new UserCollection($users));
     }
 
     /**
@@ -56,7 +73,7 @@ class UserController extends ApiController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, $id)
     {
         //
     }
@@ -80,7 +97,17 @@ class UserController extends ApiController
      */
     public function self()
     {
-        return $this->success(new UserResource(TokenFactory::getCurrentUser()));
+        return $this->success((new UserResource(TokenFactory::getCurrentUser()))->hide(['account', 'email', 'is_bind_phone', 'is_bind_email', 'is_bind_account', 'is_bind_wx']));
+    }
+
+    public function selfUpdate(UpdateUser $request)
+    {
+        TokenFactory::getCurrentUser()->update([
+            'name' => $request->name,
+            'phone' => $request->phone
+        ]);
+
+        return $this->message('ok.');
     }
 
     public function groups()
@@ -105,5 +132,51 @@ class UserController extends ApiController
         if (!$receivable) return $this->success(null);
 
         return $this->success(new ReceivableResource($receivable));
+    }
+
+    public function checks()
+    {
+        return $this->success(
+            new ServiceOrderCollection(TokenFactory::getCurrentUser()
+                ->checks()
+                ->where('status', '>', 1)
+                ->paginate(Input::get('limit') ?: 10)
+            )
+        );
+    }
+
+    public function services()
+    {
+        return $this->success(
+            new ServiceOrderCollection(TokenFactory::getCurrentUser()
+                ->services()
+                ->where('status', '>', 1)
+                ->paginate(Input::get('limit') ?: 10)
+            )
+        );
+    }
+
+    public function friends($uid)
+    {
+        $friends = [];
+        $this->getFriends($uid, $friends);
+
+        return $friends;
+    }
+
+    public function getFriends($uid, &$friends, $level = 1)
+    {
+        foreach (User::findOrFail($uid)->selfGroups as $selfGroup) {
+            foreach ($selfGroup->users as $user) {
+                array_push($friends, [
+                    'id' => $user->id,
+                    'nickname' => $user->nickname,
+                    'phone' => $user->phone ?: '-',
+                    'level' => $level,
+                    'created_at' => (string)$user->created_at
+                ]);
+                $this->getFriends($user->id, $friends, $level + 1);
+            }
+        }
     }
 }

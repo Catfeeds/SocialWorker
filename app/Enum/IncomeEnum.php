@@ -25,4 +25,7 @@ class IncomeEnum
 
     // 二级好友消费
     const TWOCONSUME = 5;
+
+    // 提供服务
+    const SERVICE = 6;
 }

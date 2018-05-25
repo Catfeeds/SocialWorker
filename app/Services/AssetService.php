@@ -40,6 +40,10 @@ class AssetService
                 if (!$other) throw new \Exception('请输入消费金额');
                 self::rebate($uid, $other);
                 break;
+            case 'service':
+                if (!$other) throw new \Exception('请输入服务金额');
+                self::add($uid, IncomeEnum::SERVICE, $other);
+                break;
             default:
                 throw new \Exception('请输入正确的类型');
         }
@@ -107,6 +111,11 @@ class AssetService
                 $assetRecord->number = round($other * 0.05);
                 $assetRecord->transferred = round($other * 0.05);
                 Asset::where('user_id', $uid)->increment('available', round($other * 0.05));
+                break;
+            case IncomeEnum::SERVICE:
+                $assetRecord->number = round($other);
+                $assetRecord->transferred = round($other);
+                Asset::where('user_id', $uid)->increment('available', round($other));
                 break;
             default:
                 throw new \Exception('请输入正确的类型');

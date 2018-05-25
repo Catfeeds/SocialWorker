@@ -16,7 +16,7 @@ class CreateAssetRecordsTable extends Migration
         Schema::create('asset_records', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->tinyInteger('type')->comment('1邀请好友 2好友邀请 3购买设备 4一级好友消费 5二级好友消费');
+            $table->tinyInteger('type')->comment('1邀请好友 2好友邀请 3购买设备 4一级好友消费 5二级好友消费 6提供服务');
             $table->integer('number');
             $table->integer('transferred');
             $table->string('other')->nullable();

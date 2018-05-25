@@ -21,13 +21,31 @@ Route::namespace('Api')->group(function () {
 
     // 获取自己的资料
     Route::get('/users/self', 'UserController@self')->name('users.self');
+    Route::put('/users/self', 'UserController@selfUpdate');
 
     Route::get('/invite_info/{id}', 'GroupController@inviteInfo')->name('groups.inviteInfo');
+
+    Route::get('/group_id/{id}', 'GroupController@getIdByUserId');
 
     Route::get('/users/self/groups', 'UserController@groups')->name('users.groups');
     Route::get('/users/self/asset', 'UserController@asset')->name('users.asset');
     Route::get('/users/self/receivable', 'UserController@receivable')->name('users.receivable');
     Route::get('/users/self/equipment', 'UserController@equipment')->name('users.equipment');
+    Route::get('/users/self/checks', 'UserController@checks');
+    Route::get('/users/self/services', 'UserController@services');
+
+    Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
+    Route::get('/service_codes/{id}', 'ServiceCodeController@show')->name('service_codes.show');
+
+    Route::put('/equipment/bind', 'EquipmentController@bind')->name('equipment.bind');
+    Route::put('/equipment/unbind', 'EquipmentController@unbind')->name('equipment.unbind');
+
+    Route::post('/payment/wechat_pay', 'WeChatController@pay');
+    Route::post('/payment/wechat_notify/equipment', 'WeChatController@equipmentNotify');
+    Route::post('/payment/wechat_notify/service', 'WeChatController@serviceNotify');
+
+    Route::apiResource('addresses', 'AddressController')
+        ->only(['index', 'store']);
 
     Route::apiResource('groups', 'GroupController')
         ->only(['show']);
@@ -38,9 +56,6 @@ Route::namespace('Api')->group(function () {
     Route::apiResource('cashes', 'CashController')
         ->only(['store']);
 
-    Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
-    Route::get('/service_codes/{id}', 'ServiceCodeController@show')->name('service_codes.show');
-
     Route::apiResource('equipment_categories', 'EquipmentCategoryController')
         ->only(['index']);
 
@@ -50,22 +65,43 @@ Route::namespace('Api')->group(function () {
     Route::apiResource('equipment_orders', 'EquipmentOrderController')
         ->only(['store']);
 
-    Route::put('/equipment/bind', 'EquipmentController@bind')->name('equipment.bind');
-    Route::put('/equipment/unbind', 'EquipmentController@unbind')->name('equipment.unbind');
+    Route::apiResource('services', 'ServiceController')
+        ->only(['index']);
 
+    Route::apiResource('service_orders', 'ServiceOrderController')
+        ->only(['store', 'update']);
+
+
+    /**
+     * 需超级管理员权限
+     */
     Route::middleware('role:super')->group(function () {
+
+        Route::apiResource('users', 'UserController')
+            ->only(['index', 'show']);
+
+        Route::apiResource('addresses', 'AddressController')
+            ->only(['show']);
 
         Route::apiResource('equipment_categories', 'EquipmentCategoryController')
             ->only(['store', 'destroy']);
 
         Route::apiResource('equipment', 'EquipmentController')
             ->only(['store']);
+
+        Route::apiResource('services', 'ServiceController')
+            ->only(['store']);
+
+        Route::apiResource('cashes', 'CashController')
+            ->only(['index', 'update']);
+
+        Route::get('/cashes/export', 'CashController@export');
     });
 
-    Route::post('/payment/wechat_pay', 'WeChatController@pay');
-    Route::post('/payment/wechat_notify/equipment', 'WeChatController@equipmentNotify');
 
     Route::get('/test', function () {
+
+        return (new \App\Models\User())->friends(1);
         $payment = EasyWeChat::payment();
         return $payment->order->queryByOutTradeNumber('A522028116474344');
     });

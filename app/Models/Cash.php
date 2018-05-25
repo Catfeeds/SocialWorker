@@ -34,6 +34,6 @@ class Cash extends Model
 
     public function user()
     {
-        $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User');
     }
 }

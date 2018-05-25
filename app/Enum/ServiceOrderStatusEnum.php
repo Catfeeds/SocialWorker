@@ -14,7 +14,7 @@ class ServiceOrderStatusEnum
     // 未支付
     const UNPAID = 1;
 
-    // 已支付
+    // 现金支付
     const PAYED = 2;
 
     // 已收款

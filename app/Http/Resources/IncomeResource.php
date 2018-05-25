@@ -30,7 +30,8 @@ class IncomeResource extends JsonResource
             IncomeEnum::BEINVITED => '好友邀请',
             IncomeEnum::BUY => '申请设备',
             IncomeEnum::ONECONSUME => '一级好友消费',
-            IncomeEnum::TWOCONSUME => '二级好友消费'
+            IncomeEnum::TWOCONSUME => '二级好友消费',
+            IncomeEnum::SERVICE => '提供服务'
         ];
 
         return $type[$value];
