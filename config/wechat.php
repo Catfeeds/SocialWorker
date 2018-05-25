@@ -107,9 +107,9 @@ return [
      'payment' => [
          'default' => [
              'sandbox'            => env('WECHAT_PAYMENT_SANDBOX', false),
-             'app_id'             => env('WECHAT_PAYMENT_APPID', 'wx87da90724237fd8f'),
-             'mch_id'             => env('WECHAT_PAYMENT_MCH_ID', '1244355702'),
-             'key'                => env('WECHAT_PAYMENT_KEY', 'mzxcmzxcmzxcmzxcmzxcmzxcmzxcmzxc'),
+             'app_id'             => env('WECHAT_PAYMENT_APPID', ''),
+             'mch_id'             => env('WECHAT_PAYMENT_MCH_ID', ''),
+             'key'                => env('WECHAT_PAYMENT_KEY', ''),
              'cert_path'          => env('WECHAT_PAYMENT_CERT_PATH', 'path/to/cert/apiclient_cert.pem'),    // XXX: 绝对路径！！！！
              'key_path'           => env('WECHAT_PAYMENT_KEY_PATH', 'path/to/cert/apiclient_key.pem'),      // XXX: 绝对路径！！！！
              'notify_url'         => env('APP_URL') . '/api/payment/wechat_notify',                           // 默认支付结果通知地址
