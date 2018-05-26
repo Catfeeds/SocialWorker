@@ -36,6 +36,7 @@ Route::namespace('Api')->group(function () {
 
     Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
     Route::get('/service_codes/{id}', 'ServiceCodeController@show')->name('service_codes.show');
+    Route::get('/funding_codes/{id}', 'EquipmentOrderCodeController@show')->name('equipment_order_codes.show');
 
     Route::put('/equipment/bind', 'EquipmentController@bind')->name('equipment.bind');
     Route::put('/equipment/unbind', 'EquipmentController@unbind')->name('equipment.unbind');
@@ -71,6 +72,9 @@ Route::namespace('Api')->group(function () {
     Route::apiResource('service_orders', 'ServiceOrderController')
         ->only(['store', 'update']);
 
+    Route::apiResource('funding_orders', 'CrowdFundingOrderController')
+        ->only(['store']);
+
 
     /**
      * 需超级管理员权限
@@ -96,6 +100,7 @@ Route::namespace('Api')->group(function () {
             ->only(['index', 'update']);
 
         Route::get('/cashes/export', 'CashController@export');
+        Route::get('/equipment/export', 'EquipmentController@export');
     });
 
 

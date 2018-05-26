@@ -9,6 +9,7 @@
 namespace App\Models;
 
 
+use App\Events\EquipmentOrderCreated;
 use App\Services\Tokens\TokenFactory;
 
 /**
@@ -36,10 +37,18 @@ use App\Services\Tokens\TokenFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EquipmentOrder whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EquipmentOrder whereUserId($value)
  * @mixin \Eloquent
+ * @property int $type 1购买 2众筹
+ * @property-read \App\Models\EquipmentOrderCode $code
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EquipmentOrder whereType($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CrowdFundingOrder[] $CrowdFundingOrder
  */
 class EquipmentOrder extends Model
 {
     protected $guarded = [];
+
+    protected $dispatchesEvents = [
+        'created' => EquipmentOrderCreated::class
+    ];
 
     public function user()
     {
@@ -48,10 +57,15 @@ class EquipmentOrder extends Model
 
     public function code()
     {
-        return $this->hasOne('App\Models\EquipmentOrderCode');
+        return $this->hasOne('App\Models\EquipmentOrderCode')->withDefault();
     }
 
-    public static function generate($ids)
+    public function CrowdFundingOrder()
+    {
+        return $this->hasMany('App\Models\CrowdFundingOrder');
+    }
+
+    public static function generate($ids, $type = 1)
     {
         $products = EquipmentCategory::whereIn('id', $ids)->get(['name', 'price']);
 
@@ -61,7 +75,8 @@ class EquipmentOrder extends Model
             'user_id' => TokenFactory::getCurrentUID(),
             'order_no' => makeOrderNo(),
             'price' => $totalPrice,
-            'snap_content' => $products
+            'snap_content' => $products,
+            'type' => $type
         ]);
 
         return $order;

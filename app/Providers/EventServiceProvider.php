@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\GroupCreated' => [
             'App\Listeners\GroupCreatedListener'
         ],
+        'App\Events\EquipmentOrderCreated' => [
+            'App\Listeners\EquipmentOrderCreatedListener'
+        ]
     ];
 
     /**

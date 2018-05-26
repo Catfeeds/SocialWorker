@@ -38,6 +38,18 @@ class WeChatQRCode
     }
 
     /**
+     * 获取众筹码
+     *
+     * @param $scene
+     * @return mixed
+     * @throws BaseException
+     */
+    public static function crowdFunding($scene)
+    {
+        return self::get($scene, 'pages/crowd-funding/crowd-funding');
+    }
+
+    /**
      * 获取小程序码
      *
      * @param $scene

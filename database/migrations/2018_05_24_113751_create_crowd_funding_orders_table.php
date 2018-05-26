@@ -17,6 +17,7 @@ class CreateCrowdFundingOrdersTable extends Migration
             $table->increments('id');
             $table->integer('equipment_order_id');
             $table->integer('user_id');
+            $table->string('order_no');
             $table->decimal('price');
             $table->tinyInteger('status')->default(0);
             $table->string('prepay_id')->nullable();

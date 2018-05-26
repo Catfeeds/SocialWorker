@@ -59,6 +59,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceOrder[] $checks
  * @property-read \App\Models\ServiceCode $serviceCode
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ServiceOrder[] $services
+ * @property string|null $name
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EquipmentOrder[] $equipmentOrders
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
  */
 class User extends Model
 {

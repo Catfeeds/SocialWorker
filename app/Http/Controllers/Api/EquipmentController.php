@@ -10,12 +10,14 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Exceptions\BaseException;
+use App\Exports\EquipmentExport;
 use App\Http\Requests\BindEquipment;
 use App\Http\Resources\EquipmentCollection;
 use App\Models\Equipment;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EquipmentController extends ApiController
 {
@@ -105,5 +107,10 @@ class EquipmentController extends ApiController
         ]);
 
         return $this->message('解绑成功');
+    }
+
+    public function export()
+    {
+        return Excel::download(new EquipmentExport(), 'equipment.xlsx');
     }
 }

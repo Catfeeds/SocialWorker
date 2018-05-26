@@ -19,4 +19,7 @@ class PayTypeEnum
 
     // 积分商城
     const INTEGRAL = 3;
+
+    // 众筹支付
+    const FUNDING = 4;
 }
