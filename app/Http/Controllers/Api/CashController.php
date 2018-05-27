@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Exceptions\BaseException;
 use App\Exceptions\ResourceStoreException;
 use App\Exports\CashesExport;
 use App\Http\Requests\StoreCash;
@@ -51,6 +52,9 @@ class CashController extends ApiController
     {
         $number = $request->post('number');
         $tax = round(taxRate($number));
+
+        if (!TokenFactory::getCurrentUser()->receivable->name)
+            throw new BaseException('请先填写收款信息');
 
         try {
             DB::transaction(function () use ($number, $tax) {

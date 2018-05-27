@@ -43,12 +43,12 @@ class UserResource extends JsonResource
     {
         return $this->filterFields([
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->name ?: '-',
             'nickname' => $this->nickname,
             'avatar' => $this->avatar,
             'sex' => $this->convertSex($this->sex),
             'account' => $this->account,
-            'phone' => $this->isSelfOrSuper() ? $this->phone : $this->partialHidden($this->phone, 3, 4),
+            'phone' => $this->phone ?: '-',
             'order_count' => $this->checks()->sum('price') + $this->equipmentOrders()->sum('price'),
             'asset' => $this->asset->available,
             'checks' => ServiceOrderResource::collection($this->checks),

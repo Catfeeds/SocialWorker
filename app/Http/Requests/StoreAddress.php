@@ -31,7 +31,9 @@ class StoreAddress extends Request
                     }
                 }
             ],
+            'province' => 'required',
             'city' => 'required',
+            'area' => 'required',
             'detail' => 'required'
         ];
     }

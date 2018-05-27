@@ -127,20 +127,16 @@ class UserController extends ApiController
 
     public function receivable()
     {
-        $receivable = TokenFactory::getCurrentUser()->receivable;
-
-        if (!$receivable) return $this->success(null);
-
-        return $this->success(new ReceivableResource($receivable));
+        return $this->success(new ReceivableResource(TokenFactory::getCurrentUser()->receivable));
     }
 
     public function checks()
     {
         return $this->success(
-            new ServiceOrderCollection(TokenFactory::getCurrentUser()
+            ServiceOrderResource::collection(TokenFactory::getCurrentUser()
                 ->checks()
                 ->where('status', '>', 1)
-                ->paginate(Input::get('limit') ?: 10)
+                ->get()
             )
         );
     }
@@ -148,12 +144,17 @@ class UserController extends ApiController
     public function services()
     {
         return $this->success(
-            new ServiceOrderCollection(TokenFactory::getCurrentUser()
+            ServiceOrderResource::collection(TokenFactory::getCurrentUser()
                 ->services()
                 ->where('status', '>', 1)
-                ->paginate(Input::get('limit') ?: 10)
+                ->get()
             )
         );
+    }
+
+    public function address()
+    {
+        return $this->success(new UserAddressResource(TokenFactory::getCurrentUser()->address));
     }
 
     public function friends($uid)

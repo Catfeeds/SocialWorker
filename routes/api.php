@@ -27,12 +27,15 @@ Route::namespace('Api')->group(function () {
 
     Route::get('/group_id/{id}', 'GroupController@getIdByUserId');
 
+    Route::get('/equipment_orders/is_paid/{id}', 'EquipmentOrderController@isPaid');
+
     Route::get('/users/self/groups', 'UserController@groups')->name('users.groups');
     Route::get('/users/self/asset', 'UserController@asset')->name('users.asset');
     Route::get('/users/self/receivable', 'UserController@receivable')->name('users.receivable');
     Route::get('/users/self/equipment', 'UserController@equipment')->name('users.equipment');
     Route::get('/users/self/checks', 'UserController@checks');
     Route::get('/users/self/services', 'UserController@services');
+    Route::get('/users/self/address', 'UserController@address');
 
     Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
     Route::get('/service_codes/{id}', 'ServiceCodeController@show')->name('service_codes.show');
@@ -46,7 +49,7 @@ Route::namespace('Api')->group(function () {
     Route::post('/payment/wechat_notify/service', 'WeChatController@serviceNotify');
 
     Route::apiResource('addresses', 'AddressController')
-        ->only(['index', 'store']);
+        ->only(['store']);
 
     Route::apiResource('groups', 'GroupController')
         ->only(['show']);
@@ -64,7 +67,7 @@ Route::namespace('Api')->group(function () {
         ->only(['index']);
 
     Route::apiResource('equipment_orders', 'EquipmentOrderController')
-        ->only(['store']);
+        ->only(['store', 'show']);
 
     Route::apiResource('services', 'ServiceController')
         ->only(['index']);

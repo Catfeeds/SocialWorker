@@ -10,6 +10,7 @@ namespace App\Exports;
 
 
 use App\Models\Equipment;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -20,6 +21,7 @@ class EquipmentExport implements FromQuery, WithHeadings, WithMapping, ShouldAut
     public function query()
     {
         return Equipment::query()
+            ->where('export', 0)
             ->join('equipment_categories', 'equipment.category_id', '=', 'equipment_categories.id')
             ->select(
                 'equipment.id',

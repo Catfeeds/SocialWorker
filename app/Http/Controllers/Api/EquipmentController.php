@@ -111,6 +111,11 @@ class EquipmentController extends ApiController
 
     public function export()
     {
-        return Excel::download(new EquipmentExport(), 'equipment.xlsx');
+        $export = Excel::download(new EquipmentExport(), 'equipment.xlsx');
+
+        Equipment::where('export', 0)
+            ->update(['export' => 1]);
+
+        return $export;
     }
 }

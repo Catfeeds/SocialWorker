@@ -17,16 +17,14 @@ use App\Services\Tokens\TokenFactory;
 
 class AddressController extends ApiController
 {
-    public function index()
-    {
-        return $this->success(new UserAddressResource(TokenFactory::getCurrentUser()->address));
-    }
+//    public function index()
+//    {
+//        return $this->success(new UserAddressResource(TokenFactory::getCurrentUser()->address));
+//    }
 
     public function show($id)
     {
-        $address = User::findOrFail($id)->address;
-
-        return $this->success($address ? new UserAddressResource($address) : null);
+        return $this->success(new UserAddressResource(User::findOrFail($id)->address));
     }
 
     public function store(StoreAddress $request)
@@ -38,7 +36,9 @@ class AddressController extends ApiController
             [
                 'name' => $request->name,
                 'phone' => $request->phone,
+                'province' => $request->province,
                 'city' => $request->city,
+                'area' => $request->area,
                 'detail' => $request->detail
             ]
         );

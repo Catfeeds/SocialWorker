@@ -17,7 +17,7 @@ class CrowdFundingOrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => (new UserResource($this->user))->show(['id', 'nickname', 'name']),
+            'user' => (new UserResource($this->user))->show(['id', 'nickname', 'name', 'avatar']),
             'order_no' => $this->order_no,
             'price' => $this->price,
             'status' => $this->status ? '已支付' : '未支付',

@@ -70,6 +70,7 @@
             layer.load();
             create(function (res) {
                 parent.window.base.loadLocalHtml('equipment.html', '.layui-body');
+                parent.window.location.href = base.g_restUrl + '/equipment/export?token=' + base.getLocalStorage('token')
                 var index = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(index);
                 layer.closeAll('loading')

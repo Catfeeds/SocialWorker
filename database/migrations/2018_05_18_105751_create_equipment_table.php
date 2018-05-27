@@ -19,6 +19,7 @@ class CreateEquipmentTable extends Migration
             $table->string('serial_no')->unique();
             $table->tinyInteger('status')->comment('0未绑定 1已绑定')->default(0);
             $table->integer('user_id')->nullable();
+            $table->integer('export')->default(0);
             $table->timestamps();
         });
     }

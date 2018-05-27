@@ -102,7 +102,7 @@ class User extends Model
      */
     public function address()
     {
-        return $this->hasOne('App\Models\Address');
+        return $this->hasOne('App\Models\Address')->withDefault();
     }
 
 
@@ -163,7 +163,7 @@ class User extends Model
      */
     public function receivable()
     {
-        return $this->hasOne('App\Models\Receivable');
+        return $this->hasOne('App\Models\Receivable')->withDefault();
     }
 
     /**

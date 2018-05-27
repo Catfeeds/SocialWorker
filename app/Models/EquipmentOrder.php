@@ -40,7 +40,7 @@ use App\Services\Tokens\TokenFactory;
  * @property int $type 1购买 2众筹
  * @property-read \App\Models\EquipmentOrderCode $code
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EquipmentOrder whereType($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CrowdFundingOrder[] $CrowdFundingOrder
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CrowdFundingOrder[] $crowdFundingOrders
  */
 class EquipmentOrder extends Model
 {
@@ -60,7 +60,7 @@ class EquipmentOrder extends Model
         return $this->hasOne('App\Models\EquipmentOrderCode')->withDefault();
     }
 
-    public function CrowdFundingOrder()
+    public function crowdFundingOrders()
     {
         return $this->hasMany('App\Models\CrowdFundingOrder');
     }

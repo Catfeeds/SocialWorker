@@ -34,7 +34,7 @@ class WeChatQRCode
      */
     public static function service($scene)
     {
-        return self::get($scene, 'pages/service/service');
+        return self::get($scene, 'pages/choose-service/choose-service');
     }
 
     /**
@@ -46,7 +46,7 @@ class WeChatQRCode
      */
     public static function crowdFunding($scene)
     {
-        return self::get($scene, 'pages/crowd-funding/crowd-funding');
+        return self::get($scene, 'pages/raise-friends/raise-friends');
     }
 
     /**
