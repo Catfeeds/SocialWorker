@@ -47,6 +47,7 @@ Route::namespace('Api')->group(function () {
     Route::post('/payment/wechat_pay', 'WeChatController@pay');
     Route::post('/payment/wechat_notify/equipment', 'WeChatController@equipmentNotify');
     Route::post('/payment/wechat_notify/service', 'WeChatController@serviceNotify');
+    Route::post('/payment/wechat_notify/funding', 'WeChatController@fundingNotify');
 
     Route::apiResource('addresses', 'AddressController')
         ->only(['store']);
