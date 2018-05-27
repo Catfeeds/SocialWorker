@@ -18,7 +18,7 @@ class ServiceController extends ApiController
 {
     public function index()
     {
-        return $this->success(new ServiceCollection(Service::paginate(Input::get('limit') ?: 10)));
+        return $this->success(new ServiceCollection(Service::paginate(Input::get('limit') ?: 20)));
     }
 
     public function store(Request $request)

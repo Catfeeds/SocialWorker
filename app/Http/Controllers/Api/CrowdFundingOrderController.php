@@ -43,7 +43,7 @@ class CrowdFundingOrderController extends ApiController
                 'equipment_order_id' => $request->order_id,
                 'user_id' => TokenFactory::getCurrentUID(),
                 'order_no' => makeOrderNo(),
-                'price' => 2.9
+                'price' => 0.01
             ]);
 
             \DB::commit();
