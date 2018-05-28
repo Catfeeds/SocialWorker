@@ -101,7 +101,7 @@
 
     $('#status').on('change', function () {
       selectValue.status = $(this).val()
-      tableIns.reload()
+      tableIns.reload({ page: { curr: 1 } })
     })
 
     $('#search').on('click', function () {
@@ -110,7 +110,7 @@
       if (searchType === '昵称') {
         selectValue.nickname = searchValue
       }
-      tableIns.reload()
+      tableIns.reload({ page: { curr: 1 } })
     })
 
     $('#export').on('click', function () {

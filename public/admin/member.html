@@ -65,7 +65,7 @@
                 selectValue.name = ''
                 selectValue.phone = searchValue
             }
-            tableIns.reload()
+            tableIns.reload({ page: { curr: 1 } })
         })
 
         //监听工具条

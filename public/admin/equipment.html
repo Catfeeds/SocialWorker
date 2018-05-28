@@ -116,12 +116,12 @@
 
     $('#type').on('change', function () {
       selectValue.category_id = $(this).val()
-      tableIns.reload()
+      tableIns.reload({ page: { curr: 1 } })
     })
 
     $('#status').on('change', function () {
       selectValue.status = $(this).val()
-      tableIns.reload()
+      tableIns.reload({ page: { curr: 1 } })
     })
 
     $('#search').on('click', function () {
@@ -132,7 +132,7 @@
         selectValue.phone = $('#searchInput').val()
         selectValue.serial_no = ''
       }
-      tableIns.reload()
+      tableIns.reload({ page: { curr: 1 } })
     })
 
     $('#export').on('click', function () {
