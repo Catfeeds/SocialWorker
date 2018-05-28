@@ -49,17 +49,37 @@ class EquipmentController extends ApiController
         $count = $request->post('count');
         $prefix = $request->post('prefix');
 
+//        $data = [];
+//        for ($i = 1; $i <= $count; $i++) {
+//            array_push($data, [
+//                'category_id' => $categoryId,
+//                'serial_no' => makeSerialNo($prefix, $i)
+//            ]);
+//        }
+//        Equipment::saveAll($data);
+
+        $arr = [];
+        for ($i = 1; $i <= $count; $i++)
+            array_push($arr, $this->makeSerialNo($prefix, $categoryId, $arr));
+
         $data = [];
-        for ($i = 1; $i <= $count; $i++) {
+        foreach ($arr as $value) {
             array_push($data, [
                 'category_id' => $categoryId,
-                'serial_no' => makeSerialNo($prefix, $i)
+                'serial_no' => $value
             ]);
         }
-
         Equipment::saveAll($data);
 
         return $this->created();
+    }
+
+    public function makeSerialNo($prefix, $categoryId, $arr)
+    {
+        $serialNo = $prefix . '-' . ($categoryId - 1) . 0 . '-' . getRandChar(8, true);
+        if (in_array($serialNo, $arr) || Equipment::where('serial_no', $serialNo)->exists())
+            $serialNo = $this->makeSerialNo($prefix, $categoryId, $arr);
+        return $serialNo;
     }
 
     /**
