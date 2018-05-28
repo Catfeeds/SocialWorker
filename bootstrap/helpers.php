@@ -87,6 +87,26 @@ function makeOrderNo()
 }
 
 /**
+ * 生成序列号
+ *
+ * @param $prefix
+ * @param $num
+ * @return string
+ */
+function makeSerialNo($prefix, $num)
+{
+    $data = $num;
+    $data .= $_SERVER ['REQUEST_TIME'];     // 请求那一刻的时间戳
+    $data .= $_SERVER ['HTTP_USER_AGENT'];  // 获取访问者在用什么操作系统
+    $data .= $_SERVER ['SERVER_ADDR'];      // 服务器IP
+    $data .= $_SERVER ['SERVER_PORT'];      // 端口号
+    $data .= $_SERVER ['REMOTE_ADDR'];      // 远程IP
+    $data .= $_SERVER ['REMOTE_PORT'];      // 端口信息
+
+    return $prefix . '-' . strtoupper(num16to32(md5($data)));
+}
+
+/**
  * 生成guid
  *
  * @param null $namespace
@@ -106,11 +126,23 @@ function createGuid($namespace = null)
     $data .= $_SERVER ['REMOTE_PORT'];      // 端口信息
 
     $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
-//    $guid = substr($hash, 0, 8) . '-' . substr($hash, 8, 4) . '-' . substr($hash, 12, 4) . '-' . substr($hash, 16, 4) . '-' . substr($hash, 20, 12);
-
-    $guid = substr($hash, 1, 6) . '-' . substr($hash, 10, 4) . '-' . substr($hash, 16, 4) . '-' . substr($hash, 24, 8);
+    $guid = substr($hash, 0, 8) . '-' . substr($hash, 8, 4) . '-' . substr($hash, 12, 4) . '-' . substr($hash, 16, 4) . '-' . substr($hash, 20, 12);
 
     return $guid;
+}
+
+function num16to32($a)
+{
+    for ($a = md5($a, true),
+         $s = '0123456789ABCDEFGHIJKLMNOPQRSTUV',
+         $d = '',
+         $f = 0;
+         $f < 8;
+         $g = ord($a[$f]),
+         $d .= $s[($g ^ ord($a[$f + 8])) - $g & 0x1F],
+         $f++
+    ) ;
+    return $d;
 }
 
 /**

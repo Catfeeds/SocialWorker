@@ -47,12 +47,13 @@ class EquipmentController extends ApiController
     {
         $categoryId = $request->post('category_id');
         $count = $request->post('count');
+        $prefix = $request->post('prefix');
 
         $data = [];
         for ($i = 1; $i <= $count; $i++) {
             array_push($data, [
                 'category_id' => $categoryId,
-                'serial_no' => createGuid()
+                'serial_no' => makeSerialNo($prefix, $i)
             ]);
         }
 

@@ -23,6 +23,13 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">所属商家</label>
+            <div class="layui-input-block">
+                <input id="prefix" type="text" name="prefix" required lay-verify="required" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">数量</label>
             <div class="layui-input-block">
                 <input id="count" type="text" name="count" required lay-verify="required|number" class="layui-input">
@@ -52,6 +59,7 @@
 
         var data = {
             category_id: null,
+            prefix: null,
             count: null
         };
 
@@ -79,12 +87,14 @@
 
         function getFormData(field) {
             data.category_id = field.category;
+            data.prefix = field.prefix;
             data.count = field.count;
             check();
         }
 
         function check() {
             if (!data.category_id) error('请选择设备类型')
+            if (data.prefix.length != 3) error('请输入3位商家编号')
             if (data.count < 1 || data.count > 9999) error('请输入1-9999', '#count')
         }
 
