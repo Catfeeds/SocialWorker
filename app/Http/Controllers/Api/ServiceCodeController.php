@@ -13,8 +13,8 @@ use App\Models\ServiceCode;
 
 class ServiceCodeController extends ApiController
 {
-    public function show(ServiceCode $invitationCode)
+    public function show(ServiceCode $serviceCode)
     {
-        return $invitationCode->code;
+        return $serviceCode->code;
     }
 }
