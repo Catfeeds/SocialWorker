@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             EquipmentCategoriesTableSeeder::class,
             CachesFlushSeeder::class,
             ServicesTableSeeder::class,
-            AssessesTableSeeder::class,
+//            AssessesTableSeeder::class,
         ]);
     }
 }
