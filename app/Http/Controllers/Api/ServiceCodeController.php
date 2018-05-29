@@ -15,6 +15,6 @@ class ServiceCodeController extends ApiController
 {
     public function show(ServiceCode $invitationCode)
     {
-        return $invitationCode->value('code');
+        return $invitationCode->code;
     }
 }

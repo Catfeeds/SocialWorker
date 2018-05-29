@@ -15,6 +15,6 @@ class EquipmentOrderCodeController extends ApiController
 {
     public function show(EquipmentOrderCode $equipmentOrderCode)
     {
-        return $equipmentOrderCode->value('code');
+        return $equipmentOrderCode->code;
     }
 }
