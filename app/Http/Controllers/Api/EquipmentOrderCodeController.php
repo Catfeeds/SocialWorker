@@ -13,8 +13,8 @@ use App\Models\EquipmentOrderCode;
 
 class EquipmentOrderCodeController extends ApiController
 {
-    public function show(EquipmentOrderCode $equipmentOrderCode)
+    public function show($id)
     {
-        return $equipmentOrderCode->code;
+        return EquipmentOrderCode::findOrFail($id)->code;
     }
 }
