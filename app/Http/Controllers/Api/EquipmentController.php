@@ -14,6 +14,7 @@ use App\Exports\EquipmentExport;
 use App\Http\Requests\BindEquipment;
 use App\Http\Resources\EquipmentCollection;
 use App\Models\Equipment;
+use App\Services\AssetService;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -100,6 +101,8 @@ class EquipmentController extends ApiController
             'status' => 1,
             'user_id' => TokenFactory::getCurrentUID()
         ]);
+
+        AssetService::income(TokenFactory::getCurrentUID(), 'buy', $request->post('serial_no'));
 
         return $this->message('绑定成功');
     }
