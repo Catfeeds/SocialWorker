@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>订单详情</title>
+    <link rel="stylesheet" href="./lib/layui/css/layui.css">
+</head>
+
+<body style="padding:10px 50px">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>基本信息</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" action="javascript:;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">订单编号</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="orderNo" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">下单时间</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="createdAt" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">购买用户</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="buyUser" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付方式</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="payType" class="layui-input" disabled>
+            </div>
+        </div>
+    </form>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>收货信息</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" action="javascript:;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">收货人</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="name" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系电话</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="phone" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">收货地址</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="address" class="layui-input" disabled>
+            </div>
+        </div>
+    </form>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>商品信息</legend>
+    </fieldset>
+    <form class="layui-form layui-form-pane" action="javascript:;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">应付金额</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="need" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">实付金额</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="actual" class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">众筹金额</label>
+            <div class="layui-input-block" id="category">
+                <input type="text" id="public" class="layui-input" disabled>
+            </div>
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>商品名称</th>
+                    <th>商品价格</th>
+                </tr>
+            </thead>
+            <tbody id="products">
+
+            </tbody>
+        </table>
+    </form>
+</body>
+
+<script src="./js/jquery-3.3.1.min.js"></script>
+<script src="./lib/layui/layui.js"></script>
+<script src="./js/common.js"></script>
+<script src="./lib/regexp/regexp.js"></script>
+<script>
+    var base = window.base;
+    base.getLocalStorage('token') || (window.location.href = 'login.html');
+
+    layui.use(['element', 'layer', 'form', 'layedit', 'laydate', 'upload'], function () {
+        var element = layui.element,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            form = layui.form;
+
+        var id = base.getQueryString('id');
+
+        paddingData();
+
+        function paddingData(callback) {
+            getByID(function (res) {
+                $('#orderNo').val(res.order_no);
+                $('#createdAt').val(res.created_at);
+                $('#buyUser').val(res.user.nickname);
+                $('#payType').val(res.type);
+                $('#name').val(res.address.name);
+                $('#phone').val(res.address.phone);
+                $('#address').val(`${res.address.province},${res.address.city},${res.address.area},${res.address.detail}`);
+                $('#need').val(res.price);
+                $('#actual').val(res.type == '众筹' ? 0 : res.price);
+                $('#public').val(res.raise);
+
+                var products = JSON.parse(res.products);
+                var html = '';
+                for (var i in products) {
+                    html += `
+                        <tr>
+                            <td>${products[i].name}</td>
+                            <td>${products[i].price}</td>
+                        </tr>
+                    `;
+                }
+                $('#products').html(html)
+            });
+        }
+
+        function getByID(callback) {
+            var params = {
+                url: '/equipment_orders/' + id,
+                tokenFlag: true,
+                success: function (res) {
+                    callback && callback(res.data);
+                }
+            }
+            base.getData(params);
+        }
+    });
+</script>
+
+</html>

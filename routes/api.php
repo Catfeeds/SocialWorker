@@ -97,6 +97,9 @@ Route::namespace('Api')->group(function () {
         Route::apiResource('equipment_categories', 'EquipmentCategoryController')
             ->only(['store', 'destroy']);
 
+        Route::apiResource('equipment_orders', 'EquipmentOrderController')
+            ->only(['index']);
+
         Route::apiResource('equipment', 'EquipmentController')
             ->only(['store']);
 

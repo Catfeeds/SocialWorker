@@ -26,36 +26,12 @@ layui.use(['element', 'layer'], function () {
         base.loadLocalHtml('cash.html', '.layui-body');
     });
 
-    $('#teachBanner').on('click', function () {
-        base.loadLocalHtml('banner.html', '.layui-body');
+    $('#category').on('click', function () {
+        base.loadLocalHtml('category.html', '.layui-body');
     });
 
-    $('#studentBanner').on('click', function () {
-        base.loadLocalHtml('banner.html', '.layui-body');
-    });
-
-    $('#clubBanner').on('click', function () {
-        base.loadLocalHtml('banner.html', '.layui-body');
-    });
-
-    $('#aboutMe').on('click', function () {
-        base.loadLocalHtml('about-me.html', '.layui-body');
-    });
-
-    $('#course').on('click', function () {
-        base.loadLocalHtml('course.html', '.layui-body');
-    });
-
-    $('#club').on('click', function () {
-        base.loadLocalHtml('club.html', '.layui-body');
-    });
-
-    $('#student').on('click', function () {
-        base.loadLocalHtml('student.html', '.layui-body');
-    });
-
-    $('#teach').on('click', function () {
-        base.loadLocalHtml('teach.html', '.layui-body');
+    $('#goods').on('click', function () {
+        base.loadLocalHtml('goods.html', '.layui-body');
     });
 
     $('#order').on('click', function () {

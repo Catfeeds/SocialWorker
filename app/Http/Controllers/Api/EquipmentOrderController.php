@@ -10,17 +10,39 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Resources\CrowdFundingOrderResource;
+use App\Http\Resources\EquipmentOrderCollection;
 use App\Http\Resources\EquipmentOrderResource;
 use App\Http\Resources\UserResource;
 use App\Models\CrowdFundingOrder;
 use App\Models\EquipmentOrder;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class EquipmentOrderController extends ApiController
 {
+    public function index(Request $request)
+    {
+        $equipmentOrder = (new EquipmentOrder())
+            ->when($request->order_no, function ($query) use ($request) {
+                $query->where('order_no', $request->order_no);
+            })
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->when($request->date, function ($query) use ($request) {
+                $query->whereDate('created_at', $request->date);
+            })
+            ->paginate(Input::get('limit') ?: 20);
+
+        return $this->success(new EquipmentOrderCollection($equipmentOrder));
+    }
+
     public function show(EquipmentOrder $equipmentOrder)
     {
+        if (in_array('super', TokenFactory::getCurrentRoles()))
+            return $this->success(new EquipmentOrderResource($equipmentOrder));
+
         return $this->success([
             'id' => $equipmentOrder->id,
             'user' => (new UserResource($equipmentOrder->user))->show(['nickname', 'avatar']),
