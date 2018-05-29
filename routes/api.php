@@ -39,9 +39,9 @@ Route::namespace('Api')->group(function () {
 
     Route::apiResource('invitation_codes', 'InvitationCodeController')
         ->only(['show']);
-    Route::apiResource('service_codes', 'InvitationCodeController')
+    Route::apiResource('service_codes', 'ServiceCodeController')
         ->only(['show']);
-    Route::apiResource('funding_codes', 'InvitationCodeController')
+    Route::apiResource('funding_codes', 'EquipmentOrderCodeController')
         ->only(['show']);
 
     Route::put('/equipment/bind', 'EquipmentController@bind')->name('equipment.bind');
