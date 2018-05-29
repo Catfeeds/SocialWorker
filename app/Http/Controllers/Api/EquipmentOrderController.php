@@ -33,6 +33,7 @@ class EquipmentOrderController extends ApiController
             ->when($request->date, function ($query) use ($request) {
                 $query->whereDate('created_at', $request->date);
             })
+            ->where('status', '>', 0)
             ->paginate(Input::get('limit') ?: 20);
 
         return $this->success(new EquipmentOrderCollection($equipmentOrder));
@@ -64,6 +65,17 @@ class EquipmentOrderController extends ApiController
         return $this->success(new EquipmentOrderResource(
             EquipmentOrder::generate($request->post('ids'), $request->post('type') ?: 1)
         ));
+    }
+
+    public function update(Request $request, $id)
+    {
+        EquipmentOrder::where('id', $id)
+            ->update([
+                'courier_no' => $request->courier_no,
+                'serial_no' => json_encode($request->serial_no),
+                'status' => 2
+            ]);
+        return $this->message('更新成功');
     }
 
     public function isPaid($id)

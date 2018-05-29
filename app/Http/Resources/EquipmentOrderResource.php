@@ -24,7 +24,7 @@ class EquipmentOrderResource extends JsonResource
             'raise' => $this->when($this->type == 2, (int)$this->raise),
             'code' => $this->when($this->type == 2, config('app.url') . '/api/funding_codes/' . $this->code->id),
             'type' => $this->convertType($this->type),
-            'status' => $this->convertStatus($this->status),
+            'status' => $this->convertStatus((int)$this->status),
             'serial_no' => $this->serial_no,
             'courier_no' => $this->courier_no,
             'order_type' => '申请订单',
@@ -46,12 +46,12 @@ class EquipmentOrderResource extends JsonResource
 
     public function convertStatus($value)
     {
-        $type = [
+        $status = [
             0 => '未支付',
-            1 => '已支付',
+            1 => '待发货',
             2 => '已发货'
         ];
 
-        return $type[$value];
+        return $status[$value];
     }
 }

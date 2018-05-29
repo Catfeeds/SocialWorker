@@ -16,25 +16,25 @@
     <form class="layui-form layui-form-pane" action="javascript:;">
         <div class="layui-form-item">
             <label class="layui-form-label">订单编号</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="orderNo" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">下单时间</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="createdAt" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">购买用户</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="buyUser" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">支付方式</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="payType" class="layui-input" disabled>
             </div>
         </div>
@@ -45,19 +45,19 @@
     <form class="layui-form layui-form-pane" action="javascript:;">
         <div class="layui-form-item">
             <label class="layui-form-label">收货人</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="name" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">联系电话</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="phone" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">收货地址</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="address" class="layui-input" disabled>
             </div>
         </div>
@@ -68,19 +68,19 @@
     <form class="layui-form layui-form-pane" action="javascript:;">
         <div class="layui-form-item">
             <label class="layui-form-label">应付金额</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="need" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">实付金额</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="actual" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">众筹金额</label>
-            <div class="layui-input-block" id="category">
+            <div class="layui-input-block">
                 <input type="text" id="public" class="layui-input" disabled>
             </div>
         </div>
@@ -95,6 +95,18 @@
 
             </tbody>
         </table>
+        <div class="layui-form-item" id="sendSerialNo">
+            <label class="layui-form-label">发货序列号</label>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">发货单号</label>
+            <div class="layui-input-block">
+                <input type="text" id="sendCourierNo" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="" lay-filter="sure" id="sure">发货</button>
+        </div>
     </form>
 </body>
 
@@ -114,6 +126,11 @@
 
         var id = base.getQueryString('id');
 
+        var data = {
+            serial_no: [],
+            courier_no: ''
+        }
+
         paddingData();
 
         function paddingData(callback) {
@@ -130,7 +147,10 @@
                 $('#public').val(res.raise);
 
                 var products = JSON.parse(res.products);
+                var serialNo = JSON.parse(res.serial_no);
+
                 var html = '';
+                var input = '';
                 for (var i in products) {
                     html += `
                         <tr>
@@ -138,9 +158,65 @@
                             <td>${products[i].price}</td>
                         </tr>
                     `;
+
+                    if (res.status == '已发货') {
+                        input += `
+                            <div class="layui-input-block">
+                                <input type="text" value="${serialNo[i]}" class="layui-input sendSerialNo" disabled>
+                            </div>
+                        `;
+                    } else {
+                        input += `
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input sendSerialNo">
+                            </div>
+                        `;
+                    }
                 }
                 $('#products').html(html)
+                $('#sendSerialNo').append(input)
+
+                if (res.status == '已发货'){
+                    $('#sendCourierNo').val(res.courier_no)
+                    $('#sendCourierNo').attr('disabled', true)
+
+                    $('#sure').hide()
+                }
             });
+        }
+
+        form.on('submit(sure)', function () {
+            getFormData();
+
+            update(function (res) {
+                parent.window.base.loadLocalHtml('order.html', '.layui-body');
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            })
+        });
+
+        function getFormData() {
+            $('.sendSerialNo').each(function (index, element) {
+                if (!element.value)
+                    error('请输入序列号')
+                data.serial_no.push(element.value)
+            })
+
+            data.courier_no = $('#sendCourierNo').val();
+            if (!data.courier_no)
+                error('请输入发货单号')
+        }
+
+        function error(text, element) {
+            if (element) {
+                $(element).focus();
+                $(element).addClass('layui-form-danger');
+                $(element).on('input', function () {
+                    $(element).removeClass('layui-form-danger');
+                });
+            }
+            layer.msg(text, { icon: 5, anim: 6 });
+            throw (text);
         }
 
         function getByID(callback) {
@@ -152,6 +228,19 @@
                 }
             }
             base.getData(params);
+        }
+
+        function update(callback) {
+            var params = {
+                url: '/equipment_orders/' + id,
+                type: 'PUT',
+                data: data,
+                tokenFlag: true,
+                success: function (res) {
+                    callback && callback(res)
+                }
+            }
+            base.getData(params)
         }
     });
 </script>
