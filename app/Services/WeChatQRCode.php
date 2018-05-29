@@ -62,7 +62,7 @@ class WeChatQRCode
         $url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . WeChatAccessToken::get();
         $body = [
             'scene' => $scene,
-            'path' => $path
+            'page' => $path
         ];
 
         $wxResult = curl($url, '', 'POST', json_encode($body));
