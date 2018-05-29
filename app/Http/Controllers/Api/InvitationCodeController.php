@@ -15,6 +15,6 @@ class InvitationCodeController extends ApiController
 {
     public function show(InvitationCode $invitationCode)
     {
-        return $invitationCode->value('code');
+        return $invitationCode->id;
     }
 }

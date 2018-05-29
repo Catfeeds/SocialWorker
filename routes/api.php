@@ -37,9 +37,12 @@ Route::namespace('Api')->group(function () {
     Route::get('/users/self/services', 'UserController@services');
     Route::get('/users/self/address', 'UserController@address');
 
-    Route::get('/invitation_codes/{id}', 'InvitationCodeController@show')->name('invitation_codes.show');
-    Route::get('/service_codes/{id}', 'ServiceCodeController@show')->name('service_codes.show');
-    Route::get('/funding_codes/{id}', 'EquipmentOrderCodeController@show')->name('equipment_order_codes.show');
+    Route::apiResource('invitation_codes', 'InvitationCodeController')
+        ->only(['show']);
+    Route::apiResource('service_codes', 'InvitationCodeController')
+        ->only(['show']);
+    Route::apiResource('funding_codes', 'InvitationCodeController')
+        ->only(['show']);
 
     Route::put('/equipment/bind', 'EquipmentController@bind')->name('equipment.bind');
     Route::put('/equipment/unbind', 'EquipmentController@unbind')->name('equipment.unbind');
