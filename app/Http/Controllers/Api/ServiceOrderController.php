@@ -14,6 +14,7 @@ use App\Exceptions\BaseException;
 use App\Http\Resources\ServiceOrderResource;
 use App\Models\Service;
 use App\Models\ServiceOrder;
+use App\Services\AssetService;
 use App\Services\Tokens\TokenFactory;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,8 @@ class ServiceOrderController extends ApiController
         if ($request->detection_result){
             $serviceOrder->detection_result = $request->detection_result;
             $serviceOrder->status = ServiceOrderStatusEnum::COMPLETED;
+
+            AssetService::transfer(TokenFactory::getCurrentUID(), 'beinvite');
         }
 
         $serviceOrder->save();

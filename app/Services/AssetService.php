@@ -13,6 +13,8 @@ use App\Enum\IncomeEnum;
 use App\Models\Asset;
 use App\Models\AssetRecord;
 use App\Models\User;
+use App\Services\Tokens\TokenFactory;
+use Carbon\Carbon;
 
 class AssetService
 {
@@ -126,6 +128,36 @@ class AssetService
 
     public static function transfer($uid, $type)
     {
+        switch ($type) {
+            case 'invite':
+                $assetRecord = AssetRecord::where('other', $uid)
+                    ->where('type', 1)
+                    ->first();
+                if ($assetRecord && $assetRecord->transferred == 0) {
+                    $assetRecord->increment('transferred', $assetRecord->number);
+                    $asset = Asset::where('user_id', $assetRecord->user_id)->first();
+                    $asset->increment('available', $assetRecord->number);
+                    $asset->decrement('disabled', $assetRecord->number);
+                }
+                break;
+            case 'beinvite':
+                $assetRecord = AssetRecord::where('user_id', $uid)
+                    ->where('type', 2)
+                    ->first();
+                if ($assetRecord
+                    && User::findOrFail($uid)->bindingsEquipment()->count() > 0
+                    && $assetRecord->transferred < $assetRecord->number
+                    && Carbon::today()->toDateString()
+                    != Carbon::parse($assetRecord->updated_at)->toDateString()) {
 
+                    $asset = Asset::where('user_id', $uid)->first();
+                    $assetRecord->increment('transferred');
+                    $asset->increment('available');
+                    $asset->decrement('disabled');
+                }
+                break;
+            default:
+                throw new \Exception('请输入正确的类型');
+        }
     }
 }

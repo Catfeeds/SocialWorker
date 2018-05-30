@@ -107,6 +107,8 @@ class WeChatController extends ApiController
                 if (array_get($message, 'result_code') === 'SUCCESS') {
                     // 消费返利
                     AssetService::income($order->user_id, 'consume', $order->price);
+                    // 为邀请者转移资产
+                    AssetService::transfer($order->user_id, 'invite');
 
                     $order->status = 1;
                     $order->save();
@@ -182,6 +184,8 @@ class WeChatController extends ApiController
                     AssetService::income($order->user_id, 'consume', $order->price);
                     // 为提供服务用户增加资产
                     AssetService::income($order->inspector_id, 'service', $order->price);
+                    // 为邀请者转移资产
+                    AssetService::transfer($order->user_id, 'invite');
 
                     $order->status = ServiceOrderStatusEnum::CONFIRM;
                     $order->paid_at = Carbon::now();
@@ -258,6 +262,8 @@ class WeChatController extends ApiController
                 if (array_get($message, 'result_code') === 'SUCCESS') {
                     // 消费返利
                     AssetService::income($order->user_id, 'consume', $order->price);
+                    // 为邀请者转移资产
+                    AssetService::transfer($order->user_id, 'invite');
 
                     $order->equipmentOrder()->increment('raise', $order->price);
                     $order->status = 1;

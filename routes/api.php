@@ -116,6 +116,8 @@ Route::namespace('Api')->group(function () {
 
     Route::get('/test', function () {
 
+        return \App\Models\User::findOrFail(2)->groups[0];
+
         return \App\Services\WeChatQRCode::service('15');
 
         return (new \App\Models\User())->friends(1);
