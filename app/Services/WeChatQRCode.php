@@ -67,8 +67,10 @@ class WeChatQRCode
 
         $wxResult = curl($url, '', 'POST', json_encode($body));
 
-        if (empty($wxResult))
-            throw new BaseException('获取小程序码失败');
+        if (!is_null(json_decode($wxResult))) {
+            \Cache::forget('wx_access_token');
+            self::get($scene, $path);
+        }
 
         return $wxResult;
     }

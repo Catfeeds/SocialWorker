@@ -41,23 +41,25 @@ class EquipmentOrderController extends ApiController
 
     public function show(EquipmentOrder $equipmentOrder)
     {
-        if (in_array('super', TokenFactory::getCurrentRoles()))
-            return $this->success(new EquipmentOrderResource($equipmentOrder));
-
-        return $this->success([
-            'id' => $equipmentOrder->id,
-            'user' => (new UserResource($equipmentOrder->user))->show(['nickname', 'avatar']),
-            'group_id' => ($equipmentOrder->user->selfGroups)[0]->id,
-            'surplus' => $equipmentOrder->price - $equipmentOrder->raise,
-            'guarantee' => CrowdFundingOrderResource::collection(
-                $equipmentOrder->crowdFundingOrders()
+        try {
+            if (in_array('super', TokenFactory::getCurrentRoles()))
+                return $this->success(new EquipmentOrderResource($equipmentOrder));
+        } catch (\Exception $exception) {
+            return $this->success([
+                'id' => $equipmentOrder->id,
+                'user' => (new UserResource($equipmentOrder->user))->show(['nickname', 'avatar']),
+                'group_id' => ($equipmentOrder->user->selfGroups)[0]->id,
+                'surplus' => $equipmentOrder->price - $equipmentOrder->raise,
+                'guarantee' => CrowdFundingOrderResource::collection(
+                    $equipmentOrder->crowdFundingOrders()
+                        ->where('status', 1)
+                        ->paginate(6)
+                ),
+                'guarantee_count' => $equipmentOrder->crowdFundingOrders()
                     ->where('status', 1)
-                    ->paginate(6)
-            ),
-            'guarantee_count' => $equipmentOrder->crowdFundingOrders()
-                ->where('status', 1)
-                ->count()
-        ]);
+                    ->count()
+            ]);
+        }
     }
 
     public function store(Request $request)
