@@ -33,4 +33,9 @@ namespace App\Models;
 class AssetRecord extends Model
 {
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

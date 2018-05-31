@@ -131,7 +131,7 @@ class AssetService
         switch ($type) {
             case 'invite':
                 $assetRecord = AssetRecord::where('other', $uid)
-                    ->where('type', 1)
+                    ->where('type', IncomeEnum::INVITE)
                     ->first();
                 if ($assetRecord && $assetRecord->transferred == 0) {
                     $assetRecord->increment('transferred', $assetRecord->number);
@@ -142,7 +142,7 @@ class AssetService
                 break;
             case 'beinvite':
                 $assetRecord = AssetRecord::where('user_id', $uid)
-                    ->where('type', 2)
+                    ->where('type', IncomeEnum::BEINVITED)
                     ->first();
                 if ($assetRecord
                     && User::findOrFail($uid)->bindingsEquipment()->count() > 0
@@ -155,6 +155,26 @@ class AssetService
                     $asset->increment('available');
                     $asset->decrement('disabled');
                 }
+                break;
+            case 'equipment':
+                $assetRecord = AssetRecord::where('type', IncomeEnum::BUY)
+                    ->where('transferred', '<', 100)
+                    ->whereHas('user', function ($query) {
+                        $query->has('bindingsEquipment');
+                    })
+                    ->get();
+                $users = $assetRecord->pluck('user_id')->toArray();
+
+                AssetRecord::where('type', IncomeEnum::BUY)
+                    ->where('transferred', '<', 100)
+                    ->whereHas('user', function ($query) {
+                        $query->has('bindingsEquipment');
+                    })
+                    ->increment('transferred');
+                Asset::whereIn('user_id', $users)
+                    ->increment('available');
+                Asset::whereIn('user_id', $users)
+                    ->decrement('disabled');
                 break;
             default:
                 throw new \Exception('请输入正确的类型');

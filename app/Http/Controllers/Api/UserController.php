@@ -104,7 +104,12 @@ class UserController extends ApiController
     {
         TokenFactory::getCurrentUser()->update([
             'name' => $request->name,
-            'phone' => $request->phone
+            'phone' => $request->phone,
+            'province' => $request->province,
+            'city' => $request->city,
+            'education' => $request->education,
+            'age' => $request->age,
+            'wants' => $request->wants
         ]);
 
         return $this->message('ok.');

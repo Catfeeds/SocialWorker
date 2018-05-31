@@ -30,7 +30,12 @@ class UpdateUser extends Request
                         return $fail($attribute . ' is invalid');
                     }
                 }
-            ]
+            ],
+            'province' => 'required',
+            'city' => 'required',
+            'education' => 'required',
+            'age' => 'required',
+            'wants' => 'required'
         ];
     }
 }
