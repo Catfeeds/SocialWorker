@@ -143,10 +143,10 @@
                 $('#phone').val(res.address.phone);
                 $('#address').val(`${res.address.province},${res.address.city},${res.address.area},${res.address.detail}`);
                 $('#need').val(res.price);
-                $('#actual').val(res.type == '众筹' ? 0 : res.price);
+                $('#actual').val(res.type == '众筹' ? res.price - res.raise : res.price);
                 $('#public').val(res.raise);
 
-                var products = JSON.parse(res.products);
+                var products = res.products;
                 var serialNo = JSON.parse(res.serial_no);
 
                 var html = '';
@@ -176,7 +176,7 @@
                 $('#products').html(html)
                 $('#sendSerialNo').append(input)
 
-                if (res.status == '已发货'){
+                if (res.status == '已发货') {
                     $('#sendCourierNo').val(res.courier_no)
                     $('#sendCourierNo').attr('disabled', true)
 

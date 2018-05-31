@@ -19,7 +19,7 @@ class EquipmentOrderResource extends JsonResource
             'id' => $this->id,
             'user' => (new UserResource($this->user))->show(['id', 'nickname', 'phone']),
             'order_no' => $this->order_no,
-            'products' => $this->snap_content,
+            'products' => json_decode($this->snap_content, true),
             'price' => $this->price,
             'raise' => $this->when($this->type == 2, (int)$this->raise),
             'code' => $this->when($this->type == 2, config('app.url') . '/api/funding_codes/' . $this->code->id),

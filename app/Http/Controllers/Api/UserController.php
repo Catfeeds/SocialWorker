@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Requests\UpdateUser;
+use App\Http\Resources\EquipmentOrderResource;
 use App\Http\Resources\EquipmentResource;
 use App\Http\Resources\ReceivableResource;
 use App\Http\Resources\ServiceOrderCollection;
@@ -155,6 +156,16 @@ class UserController extends ApiController
                 ->get()
             )
         );
+    }
+
+    public function equipmentOrders()
+    {
+        return $this->success(EquipmentOrderResource::collection(
+            TokenFactory::getCurrentUser()
+                ->equipmentOrders()
+                ->where('type', 2)
+                ->get()
+        ));
     }
 
     public function address()

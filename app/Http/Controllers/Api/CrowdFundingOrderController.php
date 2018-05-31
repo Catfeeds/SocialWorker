@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 class CrowdFundingOrderController extends ApiController
 {
     /**
-     *
+     * 创建众筹订单
      *
      * @param Request $request
      * @throws \Throwable

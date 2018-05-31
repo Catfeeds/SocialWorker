@@ -266,6 +266,9 @@ class WeChatController extends ApiController
                     AssetService::transfer($order->user_id, 'invite');
 
                     $order->equipmentOrder()->increment('raise', $order->price);
+                    if ($order->equipmentOrder->raise == $order->equipmentOrder->price) {
+                        $order->equipmentOrder()->update(['status' => 1]);
+                    }
                     $order->status = 1;
                     $order->save();
                 }
