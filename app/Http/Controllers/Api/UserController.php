@@ -110,6 +110,7 @@ class UserController extends ApiController
             'city' => $request->city,
             'education' => $request->education,
             'age' => $request->age,
+            'sex' => $request->sex,
             'wants' => $request->wants
         ]);
 

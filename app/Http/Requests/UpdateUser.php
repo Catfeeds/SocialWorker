@@ -31,11 +31,12 @@ class UpdateUser extends Request
                     }
                 }
             ],
-            'province' => 'required',
-            'city' => 'required',
+//            'province' => 'required',
+//            'city' => 'required',
             'education' => 'required',
             'age' => 'required',
-            'wants' => 'required'
+            'sex' => 'required',
+//            'wants' => 'required'
         ];
     }
 }
