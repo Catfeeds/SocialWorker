@@ -56,6 +56,7 @@ class UserResource extends JsonResource
             'phone' => $this->phone ?: '-',
             'order_count' => $this->checks()->sum('price') + $this->equipmentOrders()->sum('price'),
             'asset' => $this->asset->available,
+            'disabled' => $this->asset->disabled,
             'checks' => ServiceOrderResource::collection($this->checks()->where('status', '>', 1)->get()),
             'services' => ServiceOrderResource::collection($this->services()->where('status', '>', 1)->get()),
             'friends' => (new UserController())->friends($this->id),

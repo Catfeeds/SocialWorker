@@ -42,10 +42,11 @@
                 { field: 'name', title: '姓名', align: 'center' },
                 { field: 'phone', title: '手机', align: 'center' },
                 { field: 'order_count', title: '订单累计', align: 'center' },
-                { field: 'asset', title: '可用社工券', align: 'center' }
+                { field: 'asset', title: '可用社工券', align: 'center' },
+                { field: 'disabled', title: '冻结社工券', align: 'center' }
             ]],
             done: function (res, curr, count) {
-
+                console.log(res)
             }
         });
 

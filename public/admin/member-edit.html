@@ -28,38 +28,44 @@
                 <form class="layui-form layui-form-pane" action="javascript:;">
                     <div class="layui-form-item">
                         <label class="layui-form-label">微信昵称</label>
-                        <div class="layui-input-block" id="category">
-                            <input type="text" id="nickname" value="昵称" class="layui-input" disabled>
+                        <div class="layui-input-block">
+                            <input type="text" id="nickname" class="layui-input" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">姓名</label>
-                        <div class="layui-input-block" id="category">
-                            <input type="text" id="name" value="昵称" class="layui-input" disabled>
+                        <div class="layui-input-block">
+                            <input type="text" id="name" class="layui-input" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">性别</label>
-                        <div class="layui-input-block" id="category">
-                            <input type="text" id="sex" value="昵称" class="layui-input" disabled>
+                        <div class="layui-input-block">
+                            <input type="text" id="sex" class="layui-input" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">绑定手机</label>
-                        <div class="layui-input-block" id="category">
-                            <input type="text" id="phone" value="昵称" class="layui-input" disabled>
+                        <div class="layui-input-block">
+                            <input type="text" id="phone" class="layui-input" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">订单累计</label>
-                        <div class="layui-input-block" id="category">
-                            <input type="text" id="orderCount" value="昵称" class="layui-input" disabled>
+                        <div class="layui-input-block">
+                            <input type="text" id="orderCount" class="layui-input" disabled>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">可用社工券</label>
-                        <div class="layui-input-block" id="category">
-                            <input type="text" id="asset" value="昵称" class="layui-input" disabled>
+                        <div class="layui-input-block">
+                            <input type="text" id="asset" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">冻结社工券</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="disabled" class="layui-input" disabled>
                         </div>
                     </div>
                 </form>
@@ -161,6 +167,7 @@
                 $('#phone').val(res.phone);
                 $('#orderCount').val(res.order_count);
                 $('#asset').val(res.asset);
+                $('#disabled').val(res.disabled);
 
                 var checks = '';
                 for (var i in res.checks) {
