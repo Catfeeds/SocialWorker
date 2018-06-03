@@ -48,6 +48,7 @@ class EquipmentOrderController extends ApiController
             return $this->success([
                 'id' => $equipmentOrder->id,
                 'order_no' => $equipmentOrder->order_no,
+                'status' => $equipmentOrder->status,
                 'user' => (new UserResource($equipmentOrder->user))->show(['nickname', 'avatar']),
                 'group_id' => ($equipmentOrder->user->selfGroups)[0]->id,
                 'surplus' => $equipmentOrder->price - $equipmentOrder->raise,
