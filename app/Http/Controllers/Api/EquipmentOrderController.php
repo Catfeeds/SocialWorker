@@ -47,6 +47,7 @@ class EquipmentOrderController extends ApiController
         } catch (\Exception $exception) {
             return $this->success([
                 'id' => $equipmentOrder->id,
+                'order_no' => $equipmentOrder->order_no,
                 'user' => (new UserResource($equipmentOrder->user))->show(['nickname', 'avatar']),
                 'group_id' => ($equipmentOrder->user->selfGroups)[0]->id,
                 'surplus' => $equipmentOrder->price - $equipmentOrder->raise,
