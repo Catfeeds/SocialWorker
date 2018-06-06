@@ -16,14 +16,7 @@ class BindEquipment extends Request
     public function rules()
     {
         return [
-            'serial_no' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    if (!Equipment::where('serial_no', $value)->first()) {
-                        throw new BaseException('设备序列号错误');
-                    }
-                }
-            ]
+            'serial_no' => ['required']
         ];
     }
 }

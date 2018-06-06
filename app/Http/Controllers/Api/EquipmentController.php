@@ -93,8 +93,17 @@ class EquipmentController extends ApiController
      */
     public function bind(BindEquipment $request)
     {
-        $equipment = Equipment::where('serial_no', $request->post('serial_no'))->first();
+        $serialNo = $request->post('serial_no');
+        if (substr($serialNo, 3, 1) != '-') {
+            $serialNo = substr_replace($serialNo, '-', 3, 0);
+        }
+        if (substr($serialNo, 6, 1) != '-') {
+            $serialNo = substr_replace($serialNo, '-', 6, 0);
+        }
 
+        $equipment = Equipment::where('serial_no', $serialNo)->first();
+
+        if (!$equipment) throw new BaseException('设备序列号错误');
         if ($equipment->status == 1) throw new BaseException('该设备已被绑定');
 
         $equipment->update([
