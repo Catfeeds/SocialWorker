@@ -17,6 +17,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\Tokens\TokenFactory;
+use App\Services\WXBizDataCrypt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -115,6 +116,30 @@ class UserController extends ApiController
         ]);
 
         return $this->message('ok.');
+    }
+
+    public function isBindPhone()
+    {
+        return $this->success(TokenFactory::getCurrentUser()->phone != null);
+    }
+
+    /**
+     * 绑定用户手机号
+     *
+     * @param Request $request
+     * @return string
+     * @throws \App\Exceptions\BaseException
+     */
+    public function bindPhone(Request $request)
+    {
+        $pc = new WXBizDataCrypt();
+        $data = $pc->decryptData($request->encryptedData, $request->iv);
+
+        TokenFactory::getCurrentUser()->update([
+            'phone' => $data['purePhoneNumber']
+        ]);
+
+        return $this->success('绑定成功');
     }
 
     public function groups()

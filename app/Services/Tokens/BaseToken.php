@@ -61,7 +61,8 @@ abstract class BaseToken
             'uid' => $uid,
             'platform' => $identity->platform,
             'identity_type' => $identity->identity_type,
-            'identifier' => $identity->identifier
+            'identifier' => $identity->identifier,
+            'remark' => $identity->remark
         ];
 
         return $values;

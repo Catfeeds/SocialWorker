@@ -54,6 +54,10 @@ class WeChatMiniProgramToken extends BaseToken
             $identity = $this->createUserIdentity($openid);
         }
 
+        $identity->update([
+            'remark' => $baseInfo['session_key']
+        ]);
+
         return $identity;
     }
 
