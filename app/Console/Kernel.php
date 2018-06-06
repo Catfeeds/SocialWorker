@@ -30,13 +30,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->call(function () {
-            Asset::where('user_id', 1)
-                ->increment('available');
-        })->everyMinute();
-
-//        $schedule->call(function () {
-//            AssetService::transfer(1, 'equipment');
-//        })->daily();
+            AssetService::transfer(1, 'equipment');
+        })->daily();
     }
 
     /**
