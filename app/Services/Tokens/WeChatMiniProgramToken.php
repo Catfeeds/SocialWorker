@@ -71,7 +71,7 @@ class WeChatMiniProgramToken extends BaseToken
         $avatar = request()->post('avatar');
         $sex = request()->post('sex');
 
-        if(!$nickname || !$avatar || !$sex)
+        if(!$nickname || !$avatar)
             throw new UserNotFoundException();
 
         DB::beginTransaction();
