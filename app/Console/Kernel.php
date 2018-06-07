@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             AssetService::transfer(1, 'equipment');
-        })->everyMinute();
+        })->daily();
     }
 
     /**
