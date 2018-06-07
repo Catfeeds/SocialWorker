@@ -159,6 +159,7 @@ class AssetService
             case 'equipment':
                 $assetRecord = AssetRecord::where('type', IncomeEnum::BUY)
                     ->where('transferred', '<', 100)
+                    ->whereDate('updated_at', '<>', Carbon::now()->toDateString())
                     ->whereHas('user', function ($query) {
                         $query->has('bindingsEquipment');
                     })
@@ -167,6 +168,7 @@ class AssetService
 
                 AssetRecord::where('type', IncomeEnum::BUY)
                     ->where('transferred', '<', 100)
+                    ->whereDate('updated_at', '<>', Carbon::now()->toDateString())
                     ->whereHas('user', function ($query) {
                         $query->has('bindingsEquipment');
                     })
