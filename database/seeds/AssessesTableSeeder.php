@@ -36,7 +36,6 @@ class AssessesTableSeeder extends Seeder
             ['name' => '前列腺炎', 'score' => 1, 'type' => 1],
             ['name' => '痔疮', 'score' => 1, 'type' => 1],
             ['name' => '湿疹', 'score' => 1, 'type' => 1],
-            ['name' => '都没有', 'score' => 0, 'type' => 1],
             ['name' => '企业家', 'score' => 3, 'type' => 2],
             ['name' => '管理人员', 'score' => 3, 'type' => 2],
             ['name' => '矿业及化工工人', 'score' => 3, 'type' => 2],
@@ -55,7 +54,6 @@ class AssessesTableSeeder extends Seeder
             ['name' => '冠心病', 'score' => 2, 'type' => 3],
             ['name' => '抑郁症', 'score' => 1, 'type' => 3],
             ['name' => '骨质疏松', 'score' => 1, 'type' => 3],
-            ['name' => '都没有', 'score' => 0, 'type' => 3],
             ['name' => '吸烟', 'score' => 3, 'type' => 4],
             ['name' => '经常饮酒', 'score' => 3, 'type' => 4],
             ['name' => '高盐口重', 'score' => 3, 'type' => 4],
@@ -64,7 +62,6 @@ class AssessesTableSeeder extends Seeder
             ['name' => '减肥', 'score' => 2, 'type' => 4],
             ['name' => '缺乏锻炼', 'score' => 1, 'type' => 4],
             ['name' => '饮食过量', 'score' => 1, 'type' => 4],
-            ['name' => '都没有', 'score' => 0, 'type' => 4],
             ['name' => '血压高', 'score' => 3, 'type' => 5],
             ['name' => '血糖高', 'score' => 3, 'type' => 5],
             ['name' => '血脂高', 'score' => 3, 'type' => 5],
@@ -83,8 +80,7 @@ class AssessesTableSeeder extends Seeder
             ['name' => '孕期', 'score' => 1, 'type' => 5],
             ['name' => '术后恢复', 'score' => 1, 'type' => 5],
             ['name' => '更年期', 'score' => 1, 'type' => 5],
-            ['name' => '口苦', 'score' => 1, 'type' => 5],
-            ['name' => '都没有', 'score' => 0, 'type' => 5]
+            ['name' => '口苦', 'score' => 1, 'type' => 5]
         ]);
     }
 }

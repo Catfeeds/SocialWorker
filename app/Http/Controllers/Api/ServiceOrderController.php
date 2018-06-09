@@ -49,7 +49,7 @@ class ServiceOrderController extends ApiController
 
         $serviceOrder->status = ServiceOrderStatusEnum::CONFIRM;
 
-        if ($request->detection_result){
+        if ($request->detection_result) {
             $serviceOrder->detection_result = $request->detection_result;
             $serviceOrder->status = ServiceOrderStatusEnum::COMPLETED;
 
