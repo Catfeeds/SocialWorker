@@ -15,6 +15,8 @@ use App\Http\Resources\UserAssetResource;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserGroupResource;
 use App\Http\Resources\UserResource;
+use App\Models\Assess;
+use App\Models\Asset;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\Tokens\TokenFactory;
@@ -221,6 +223,19 @@ class UserController extends ApiController
         array_push($currentAssesses, ...$request->ids);
         TokenFactory::getCurrentUser()->assesses()->sync($currentAssesses);
         return $this->message('保存成功');
+    }
+
+    public function health()
+    {
+        return $this->success([
+            'history' => Assess::getScorePercent(1),
+            'job' => Assess::getScorePercent(2),
+            'inherit' => Assess::getScorePercent(3),
+            'life' => Assess::getScorePercent(4),
+            'sign' => Assess::getScorePercent(5),
+            'total' => Assess::getScorePercent(),
+            'result' => Assess::getTotalResult()
+        ]);
     }
 
     public function friends($uid)

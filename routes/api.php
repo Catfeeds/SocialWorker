@@ -41,6 +41,7 @@ Route::namespace('Api')->group(function () {
     Route::put('/users/self/bind_phone', 'UserController@bindPhone');
     Route::get('/users/self/assesses', 'UserController@assesses');
     Route::put('/users/self/assesses', 'UserController@saveAssesses');
+    Route::get('/users/self/health', 'UserController@health');
 
     Route::apiResource('invitation_codes', 'InvitationCodeController')
         ->only(['show']);
