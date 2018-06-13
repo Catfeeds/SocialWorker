@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Requests\UpdateUser;
+use App\Http\Resources\AssessResource;
 use App\Http\Resources\EquipmentOrderResource;
 use App\Http\Resources\EquipmentResource;
 use App\Http\Resources\ReceivableResource;
@@ -197,6 +198,29 @@ class UserController extends ApiController
     public function address()
     {
         return $this->success(new UserAddressResource(TokenFactory::getCurrentUser()->address));
+    }
+
+    public function assesses(Request $request)
+    {
+        return $this->success(AssessResource::collection(
+            TokenFactory::getCurrentUser()
+                ->assesses()
+                ->when($request->type, function ($query) use ($request) {
+                    $query->where('type', $request->type);
+                })->get()
+        ));
+    }
+
+    public function saveAssesses(Request $request)
+    {
+        $currentAssesses = TokenFactory::getCurrentUser()
+            ->assesses()
+            ->where('type', '<>', $request->type)
+            ->pluck('id')
+            ->toArray();
+        array_push($currentAssesses, ...$request->ids);
+        TokenFactory::getCurrentUser()->assesses()->sync($currentAssesses);
+        return $this->message('保存成功');
     }
 
     public function friends($uid)

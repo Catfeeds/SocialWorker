@@ -195,4 +195,14 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Cash');
     }
+
+    /**
+     * 用户标签
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function assesses()
+    {
+        return $this->belongsToMany('App\Models\Assess');
+    }
 }

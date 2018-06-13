@@ -39,6 +39,8 @@ Route::namespace('Api')->group(function () {
     Route::get('/users/self/orders', 'UserController@equipmentOrders');
     Route::get('/users/self/is_bind_phone', 'UserController@isBindPhone');
     Route::put('/users/self/bind_phone', 'UserController@bindPhone');
+    Route::get('/users/self/assesses', 'UserController@assesses');
+    Route::put('/users/self/assesses', 'UserController@saveAssesses');
 
     Route::apiResource('invitation_codes', 'InvitationCodeController')
         ->only(['show']);
@@ -84,6 +86,9 @@ Route::namespace('Api')->group(function () {
 
     Route::apiResource('funding_orders', 'CrowdFundingOrderController')
         ->only(['store']);
+
+    Route::apiResource('assesses', 'AssessController')
+        ->only(['index', 'show']);
 
 
     /**
