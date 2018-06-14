@@ -220,8 +220,13 @@ class UserController extends ApiController
             ->where('type', '<>', $request->type)
             ->pluck('id')
             ->toArray();
-        array_push($currentAssesses, ...$request->ids);
-        TokenFactory::getCurrentUser()->assesses()->sync($currentAssesses);
+
+        if (!$request->ids)
+            TokenFactory::getCurrentUser()->assesses()->detach();
+        else {
+            array_push($currentAssesses, ...$request->ids);
+            TokenFactory::getCurrentUser()->assesses()->sync($currentAssesses);
+        }
         return $this->message('保存成功');
     }
 
