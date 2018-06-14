@@ -222,7 +222,7 @@ class UserController extends ApiController
             ->toArray();
 
         if (!$request->ids)
-            TokenFactory::getCurrentUser()->assesses()->detach();
+            TokenFactory::getCurrentUser()->assesses()->sync($currentAssesses);
         else {
             array_push($currentAssesses, ...$request->ids);
             TokenFactory::getCurrentUser()->assesses()->sync($currentAssesses);
