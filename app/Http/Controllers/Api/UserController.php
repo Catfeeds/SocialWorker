@@ -228,12 +228,14 @@ class UserController extends ApiController
     public function health()
     {
         return $this->success([
-            'history' => Assess::getScorePercent(1),
-            'job' => Assess::getScorePercent(2),
-            'inherit' => Assess::getScorePercent(3),
-            'life' => Assess::getScorePercent(4),
-            'sign' => Assess::getScorePercent(5),
-            'total' => Assess::getScorePercent(),
+            'indicator' => [
+                ['name' => '个人病史', 'max' => 100, 'value' => Assess::getScorePercent(1)],
+                ['name' => '从事职业', 'max' => 100, 'value' => Assess::getScorePercent(2)],
+                ['name' => '家族遗传', 'max' => 100, 'value' => Assess::getScorePercent(3)],
+                ['name' => '生活状态', 'max' => 100, 'value' => Assess::getScorePercent(4)],
+                ['name' => '日常体征', 'max' => 100, 'value' => Assess::getScorePercent(5)]
+            ],
+            'total' => Assess::getScorePercent() . '%',
             'result' => Assess::getTotalResult()
         ]);
     }
