@@ -15,7 +15,7 @@ class StoreCash extends Request
     public function rules()
     {
         return [
-            'number' => 'required|integer|between:100,' . TokenFactory::getCurrentUser()->asset->available
+            'number' => 'required|integer|between:1,' . TokenFactory::getCurrentUser()->asset->available
         ];
     }
 }
