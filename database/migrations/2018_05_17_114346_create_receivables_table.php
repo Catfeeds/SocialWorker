@@ -18,6 +18,8 @@ class CreateReceivablesTable extends Migration
             $table->integer('user_id');
             $table->string('name');
             $table->string('id_card_no');
+            $table->string('bank');
+            $table->string('account');
             $table->timestamps();
         });
     }

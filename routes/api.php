@@ -73,9 +73,6 @@ Route::namespace('Api')->group(function () {
     Route::apiResource('equipment_categories', 'EquipmentCategoryController')
         ->only(['index']);
 
-    Route::apiResource('equipment', 'EquipmentController')
-        ->only(['index']);
-
     Route::apiResource('equipment_orders', 'EquipmentOrderController')
         ->only(['store', 'show']);
 
@@ -110,7 +107,7 @@ Route::namespace('Api')->group(function () {
             ->only(['index', 'update']);
 
         Route::apiResource('equipment', 'EquipmentController')
-            ->only(['store']);
+            ->only(['index', 'store']);
 
         Route::apiResource('services', 'ServiceController')
             ->only(['store']);

@@ -30,6 +30,14 @@ class StoreReceivable extends Request
                         return $fail($attribute . ' is invalid');
                     }
                 }
+            ],
+            'bank' => [
+                'required',
+                'max:100'
+            ],
+            'account' => [
+                'required',
+                'max:100'
             ]
         ];
     }

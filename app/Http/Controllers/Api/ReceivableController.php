@@ -21,7 +21,9 @@ class ReceivableController extends ApiController
             ['user_id' => TokenFactory::getCurrentUID()],
             [
                 'name' => $request->post('name'),
-                'id_card_no' => $request->post('id_card_no')
+                'id_card_no' => $request->post('id_card_no'),
+                'bank' => $request->post('bank'),
+                'account' => $request->post('account')
             ]
         );
 
